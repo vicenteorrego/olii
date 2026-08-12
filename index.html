@@ -11,6 +11,10 @@
 
 <style>
 
+/* =========================================
+   GENERAL
+========================================= */
+
 * {
     box-sizing: border-box;
 }
@@ -19,94 +23,256 @@ body {
     margin: 0;
     min-height: 100vh;
 
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #111827,
-            #1f2937
-        );
+    background: white;
 
-    color: white;
+    color: #202124;
+}
+
+
+/* =========================================
+   PANTALLA DE INICIO
+========================================= */
+
+#home {
+    min-height: 100vh;
 
     display: flex;
+    flex-direction: column;
+
     justify-content: center;
     align-items: center;
 
-    padding: 15px;
+    text-align: center;
+
+    padding: 20px;
 }
 
-.container {
+
+.logo {
+    font-size: 80px;
+
+    margin-bottom: 10px;
+
+    color: #202124;
+
+    font-weight: 500;
+}
+
+
+.title {
+    font-size: 52px;
+
+    font-weight: 400;
+
+    margin: 0 0 12px;
+
+    color: #202124;
+}
+
+
+.subtitle {
+    font-size: 18px;
+
+    color: #5f6368;
+
+    margin-bottom: 30px;
+}
+
+
+/* BOTÓN INICIO */
+
+.start-button {
+    border: none;
+
+    background: #1a73e8;
+
+    color: white;
+
+    padding: 12px 30px;
+
+    border-radius: 6px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 1px 3px rgba(0,0,0,.2);
+
+    transition: .2s;
+}
+
+
+.start-button:hover {
+    background: #1765c1;
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,.25);
+}
+
+
+/* =========================================
+   JUEGO
+========================================= */
+
+#game {
+    display: none;
+
+    min-height: 100vh;
+
+    background: #f8f9fa;
+
+    padding: 25px 15px 40px;
+}
+
+
+.game-container {
     width: 100%;
-    max-width: 600px;
+
+    max-width: 650px;
+
+    margin: auto;
 
     text-align: center;
 }
 
-h1 {
-    margin: 0 0 12px;
 
-    font-size: 32px;
+/* CABECERA */
+
+.game-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
 }
+
+
+.game-title {
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 500;
+
+    color: #202124;
+}
+
+
+.back-button {
+    border: none;
+
+    background: white;
+
+    color: #1a73e8;
+
+    border: 1px solid #dadce0;
+
+    border-radius: 6px;
+
+    padding: 8px 14px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.back-button:hover {
+    background: #f1f3f4;
+}
+
+
+/* =========================================
+   CONTROLES
+========================================= */
 
 .controls {
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     gap: 8px;
 
     flex-wrap: wrap;
 
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
-select,
-button {
-    border: none;
-    border-radius: 7px;
 
-    padding: 8px 12px;
+.controls label {
+    color: #5f6368;
 
     font-size: 14px;
 }
 
-select {
-    background: white;
-    color: #111;
-}
 
-button {
-    background: #2563eb;
-    color: white;
+select,
+.new-game-button {
+    border: 1px solid #dadce0;
+
+    background: white;
+
+    color: #202124;
+
+    border-radius: 6px;
+
+    padding: 8px 12px;
+
+    font-size: 14px;
 
     cursor: pointer;
 }
 
-button:hover {
-    background: #1d4ed8;
+
+.new-game-button {
+    background: #1a73e8;
+
+    color: white;
+
+    border-color: #1a73e8;
 }
 
-#status {
-    min-height: 24px;
 
-    margin-bottom: 8px;
+.new-game-button:hover {
+    background: #1765c1;
+}
+
+
+/* =========================================
+   ESTADO
+========================================= */
+
+#status {
+    min-height: 25px;
+
+    margin: 8px 0 10px;
 
     font-size: 17px;
 
-    font-weight: bold;
+    font-weight: 500;
+
+    color: #202124;
 }
 
-/* =========================
+
+/* =========================================
    TABLERO
-========================= */
+========================================= */
 
 .board {
     width: 480px;
+
     height: 480px;
 
     max-width: 90vw;
+
     max-height: 90vw;
 
     margin: auto;
@@ -114,15 +280,15 @@ button:hover {
     display: grid;
 
     grid-template-columns: repeat(8, 1fr);
+
     grid-template-rows: repeat(8, 1fr);
 
-    border: 5px solid #111;
+    border: 4px solid #3c4043;
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,.55);
+        0 3px 10px rgba(0,0,0,.2);
 }
 
-/* CASILLAS */
 
 .square {
     position: relative;
@@ -130,6 +296,7 @@ button:hover {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     cursor: pointer;
@@ -137,45 +304,54 @@ button:hover {
     user-select: none;
 }
 
+
 .light {
     background: #f0d9b5;
 }
+
 
 .dark {
     background: #b58863;
 }
 
-/* =========================
+
+/* =========================================
    PIEZAS
-========================= */
+========================================= */
 
 .piece {
     font-size: 42px;
 
     line-height: 1;
 
-    z-index: 2;
-
     pointer-events: none;
 
+    position: relative;
+
+    z-index: 2;
+
     text-shadow:
-        1px 2px 2px rgba(0,0,0,.5);
+        1px 2px 2px rgba(0,0,0,.45);
 }
+
 
 .white-piece {
     color: white;
 }
 
+
 .black-piece {
     color: #111;
 }
+
 
 /* PIEZA SELECCIONADA */
 
 .selected {
     box-shadow:
-        inset 0 0 0 4px #22c55e;
+        inset 0 0 0 4px #34a853;
 }
+
 
 /* MOVIMIENTO POSIBLE */
 
@@ -185,40 +361,55 @@ button:hover {
     position: absolute;
 
     width: 15px;
+
     height: 15px;
 
     border-radius: 50%;
 
-    background: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.3);
 }
+
 
 /* CAPTURA */
 
 .capture {
     box-shadow:
-        inset 0 0 0 4px #ef4444;
+        inset 0 0 0 4px #ea4335;
 }
+
 
 /* JAQUE */
 
 .check {
     box-shadow:
-        inset 0 0 0 5px #ef4444;
+        inset 0 0 0 5px #ea4335;
 }
+
+
+/* INFORMACIÓN */
 
 .info {
     margin-top: 10px;
 
-    color: #d1d5db;
+    color: #5f6368;
 
     font-size: 13px;
 }
 
-/* =========================
-   MÓVIL
-========================= */
+
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media (max-width: 550px) {
+
+    .title {
+        font-size: 42px;
+    }
+
+    .logo {
+        font-size: 65px;
+    }
 
     .board {
         width: 90vw;
@@ -229,73 +420,185 @@ button:hover {
         font-size: 9.5vw;
     }
 
-    h1 {
-        font-size: 27px;
+    .game-header {
+        padding: 0 5px;
     }
+
 }
 
 </style>
 </head>
 
+
 <body>
 
-<div class="container">
 
-    <h1>♟️ Ajedrez</h1>
+<!-- =======================================
+     PANTALLA DE INICIO
+======================================= -->
 
-    <div class="controls">
+<section id="home">
 
-        <label>
-            Modo:
-        </label>
+    <div class="logo">
+        ♟
+    </div>
 
-        <select id="mode">
+    <h1 class="title">
+        Ajedrez
+    </h1>
 
-            <option value="2">
-                2 jugadores
-            </option>
+    <div class="subtitle">
+        Juega una partida de ajedrez
+    </div>
 
-            <option value="1">
-                1 jugador vs computadora
-            </option>
+    <button
+        class="start-button"
+        id="startButton"
+    >
+        Inicio
+    </button>
 
-        </select>
+</section>
 
-        <button id="newGame">
-            Nueva partida
-        </button>
+
+
+<!-- =======================================
+     PANTALLA DEL JUEGO
+======================================= -->
+
+<section id="game">
+
+    <div class="game-container">
+
+
+        <div class="game-header">
+
+            <h1 class="game-title">
+                ♟ Ajedrez
+            </h1>
+
+            <button
+                class="back-button"
+                id="backButton"
+            >
+                ← Inicio
+            </button>
+
+        </div>
+
+
+        <div class="controls">
+
+            <label>
+                Modo:
+            </label>
+
+
+            <select id="mode">
+
+                <option value="2">
+                    2 jugadores
+                </option>
+
+                <option value="1">
+                    1 jugador vs computadora
+                </option>
+
+            </select>
+
+
+            <button
+                class="new-game-button"
+                id="newGame"
+            >
+                Nueva partida
+            </button>
+
+        </div>
+
+
+        <div id="status">
+            Turno: Blancas
+        </div>
+
+
+        <div id="board" class="board"></div>
+
+
+        <div class="info">
+            Haz clic en una pieza y después en la casilla donde quieres moverla.
+        </div>
 
     </div>
 
-    <div id="status">
-        Turno: Blancas
-    </div>
+</section>
 
-    <div id="board" class="board"></div>
-
-    <div class="info">
-        Haz clic en una pieza y después en la casilla donde quieres moverla.
-    </div>
-
-</div>
 
 
 <script>
 
-/* =====================================
-   MOTOR DE AJEDREZ
-===================================== */
+/* =========================================
+   PANTALLAS
+========================================= */
 
-let chess = new Chess();
+const home =
+    document.getElementById("home");
 
-let selectedSquare = null;
+const game =
+    document.getElementById("game");
 
-let computerThinking = false;
+const startButton =
+    document.getElementById("startButton");
+
+const backButton =
+    document.getElementById("backButton");
 
 
-/* =====================================
+/* IR AL JUEGO */
+
+startButton.addEventListener(
+    "click",
+    function() {
+
+        home.style.display = "none";
+
+        game.style.display = "block";
+
+    }
+);
+
+
+/* VOLVER AL INICIO */
+
+backButton.addEventListener(
+    "click",
+    function() {
+
+        game.style.display = "none";
+
+        home.style.display = "flex";
+
+    }
+);
+
+
+/* =========================================
+   AJEDREZ
+========================================= */
+
+let chess =
+    new Chess();
+
+let selectedSquare =
+    null;
+
+let computerThinking =
+    false;
+
+
+/* =========================================
    PIEZAS
-===================================== */
+========================================= */
 
 const symbols = {
 
@@ -316,9 +619,9 @@ const symbols = {
 };
 
 
-/* =====================================
+/* =========================================
    ELEMENTOS
-===================================== */
+========================================= */
 
 const boardElement =
     document.getElementById("board");
@@ -333,9 +636,9 @@ const newGameButton =
     document.getElementById("newGame");
 
 
-/* =====================================
+/* =========================================
    NUEVA PARTIDA
-===================================== */
+========================================= */
 
 function newGame() {
 
@@ -352,14 +655,13 @@ function newGame() {
 }
 
 
-/* =====================================
+/* =========================================
    DIBUJAR TABLERO
-===================================== */
+========================================= */
 
 function drawBoard() {
 
     boardElement.innerHTML = "";
-
 
     const board =
         chess.board();
@@ -381,25 +683,14 @@ function drawBoard() {
                 document.createElement("div");
 
 
-            const isLight =
-                (row + col) % 2 === 0;
-
-
             square.className =
                 "square " +
                 (
-                    isLight
+                    (row + col) % 2 === 0
                         ? "light"
                         : "dark"
                 );
 
-
-            /*
-             * Convertir coordenadas
-             *
-             * row 0 = 8
-             * row 7 = 1
-             */
 
             const file =
                 String.fromCharCode(
@@ -417,7 +708,7 @@ function drawBoard() {
                 squareName;
 
 
-            /* PIEZA SELECCIONADA */
+            /* SELECCIONADA */
 
             if (
                 selectedSquare ===
@@ -481,18 +772,13 @@ function drawBoard() {
 
             if (piece) {
 
-                const key =
-                    piece.color +
-                    piece.type;
-
-
-                const pieceElement =
+                const element =
                     document.createElement(
                         "span"
                     );
 
 
-                pieceElement.className =
+                element.className =
                     "piece " +
                     (
                         piece.color === "w"
@@ -501,24 +787,23 @@ function drawBoard() {
                     );
 
 
-                pieceElement.textContent =
-                    symbols[key];
+                element.textContent =
+                    symbols[
+                        piece.color +
+                        piece.type
+                    ];
 
 
                 square.appendChild(
-                    pieceElement
+                    element
                 );
 
             }
 
 
-            /*
-             * Click
-             */
-
             square.addEventListener(
                 "click",
-                () => {
+                function() {
 
                     handleSquareClick(
                         squareName
@@ -537,17 +822,13 @@ function drawBoard() {
     }
 
 
-    /* MARCAR REY EN JAQUE */
+    /* REY EN JAQUE */
 
     if (chess.in_check()) {
 
-        const currentColor =
-            chess.turn();
-
-
         const kingSquare =
             findKingSquare(
-                currentColor
+                chess.turn()
             );
 
 
@@ -574,9 +855,9 @@ function drawBoard() {
 }
 
 
-/* =====================================
+/* =========================================
    ENCONTRAR REY
-===================================== */
+========================================= */
 
 function findKingSquare(color) {
 
@@ -606,16 +887,12 @@ function findKingSquare(color) {
                 piece.type === "k"
             ) {
 
-                const file =
+                return (
                     String.fromCharCode(
                         97 + col
-                    );
-
-                const rank =
-                    8 - row;
-
-
-                return file + rank;
+                    ) +
+                    (8 - row)
+                );
 
             }
 
@@ -629,13 +906,11 @@ function findKingSquare(color) {
 }
 
 
-/* =====================================
-   CLICK EN CASILLA
-===================================== */
+/* =========================================
+   CLICK
+========================================= */
 
-function handleSquareClick(
-    square
-) {
+function handleSquareClick(square) {
 
     if (
         chess.game_over()
@@ -649,16 +924,15 @@ function handleSquareClick(
     }
 
 
-    /*
-     * En modo computadora,
-     * las negras pertenecen a la IA.
-     */
+    /* La computadora juega negras */
 
     if (
         modeElement.value === "1" &&
         chess.turn() === "b"
     ) {
+
         return;
+
     }
 
 
@@ -666,9 +940,7 @@ function handleSquareClick(
         chess.get(square);
 
 
-    /* ================================
-       YA HAY PIEZA SELECCIONADA
-    ================================= */
+    /* YA HAY SELECCIÓN */
 
     if (selectedSquare) {
 
@@ -688,15 +960,9 @@ function handleSquareClick(
             );
 
 
-        /*
-         * MOVIMIENTO VÁLIDO
-         */
+        /* MOVIMIENTO VÁLIDO */
 
         if (move) {
-
-            /*
-             * Promoción automática a dama.
-             */
 
             chess.move({
 
@@ -714,15 +980,12 @@ function handleSquareClick(
 
             selectedSquare = null;
 
-
             drawBoard();
 
             updateStatus();
 
 
-            /*
-             * Computadora
-             */
+            /* COMPUTADORA */
 
             if (
                 !chess.game_over() &&
@@ -731,7 +994,6 @@ function handleSquareClick(
             ) {
 
                 computerThinking = true;
-
 
                 setTimeout(
                     computerMove,
@@ -746,10 +1008,7 @@ function handleSquareClick(
         }
 
 
-        /*
-         * Si hizo click en otra
-         * pieza de su color
-         */
+        /* OTRA PIEZA */
 
         if (
             piece &&
@@ -767,10 +1026,6 @@ function handleSquareClick(
         }
 
 
-        /*
-         * Quitar selección
-         */
-
         selectedSquare = null;
 
         drawBoard();
@@ -780,9 +1035,7 @@ function handleSquareClick(
     }
 
 
-    /* ================================
-       SELECCIONAR PIEZA
-    ================================= */
+    /* SELECCIONAR */
 
     if (
         piece &&
@@ -800,9 +1053,9 @@ function handleSquareClick(
 }
 
 
-/* =====================================
+/* =========================================
    COMPUTADORA
-===================================== */
+========================================= */
 
 function computerMove() {
 
@@ -814,6 +1067,7 @@ function computerMove() {
         computerThinking = false;
 
         return;
+
     }
 
 
@@ -837,10 +1091,7 @@ function computerMove() {
 
 
     /*
-     * Buscar capturas primero.
-     *
-     * Esto hace que la computadora
-     * intente "comerse" piezas.
+     * Preferir capturas
      */
 
     const captures =
@@ -850,22 +1101,21 @@ function computerMove() {
         );
 
 
-    let possibleMoves =
+    let choices =
         captures.length > 0
             ? captures
             : moves;
 
 
     /*
-     * Si puede dar jaque,
-     * darle prioridad.
+     * Buscar jaques
      */
 
-    const checkingMoves =
-        possibleMoves.filter(
+    const checks =
+        choices.filter(
             move => {
 
-                const copy =
+                const test =
                     new Chess(
                         chess.fen()
                     );
@@ -873,13 +1123,21 @@ function computerMove() {
 
                 try {
 
-                    copy.move({
-                        from: move.from,
-                        to: move.to,
-                        promotion: "q"
+                    test.move({
+
+                        from:
+                            move.from,
+
+                        to:
+                            move.to,
+
+                        promotion:
+                            "q"
+
                     });
 
-                    return copy.in_check();
+
+                    return test.in_check();
 
                 } catch {
 
@@ -892,31 +1150,24 @@ function computerMove() {
 
 
     if (
-        checkingMoves.length > 0
+        checks.length > 0
     ) {
 
-        possibleMoves =
-            checkingMoves;
+        choices = checks;
 
     }
 
 
-    /*
-     * Elegir movimiento
-     */
+    /* Elegir */
 
     const move =
-        possibleMoves[
+        choices[
             Math.floor(
                 Math.random() *
-                possibleMoves.length
+                choices.length
             )
         ];
 
-
-    /*
-     * Hacer movimiento
-     */
 
     chess.move({
 
@@ -941,9 +1192,9 @@ function computerMove() {
 }
 
 
-/* =====================================
+/* =========================================
    ESTADO
-===================================== */
+========================================= */
 
 function updateStatus() {
 
@@ -975,7 +1226,6 @@ function updateStatus() {
         statusElement.textContent =
             "🤝 ¡Tablas por ahogado!";
 
-
         return;
 
     }
@@ -987,7 +1237,6 @@ function updateStatus() {
 
         statusElement.textContent =
             "🤝 ¡Tablas por repetición!";
-
 
         return;
 
@@ -1001,7 +1250,6 @@ function updateStatus() {
         statusElement.textContent =
             "🤝 ¡Tablas! Material insuficiente.";
 
-
         return;
 
     }
@@ -1013,28 +1261,17 @@ function updateStatus() {
             : "Negras";
 
 
-    if (
+    statusElement.textContent =
         chess.in_check()
-    ) {
-
-        statusElement.textContent =
-            "⚠️ ¡Jaque! Turno: " +
-            turnText;
-
-    } else {
-
-        statusElement.textContent =
-            "Turno: " +
-            turnText;
-
-    }
+            ? "⚠️ ¡Jaque! Turno: " + turnText
+            : "Turno: " + turnText;
 
 }
 
 
-/* =====================================
-   EVENTOS
-===================================== */
+/* =========================================
+   BOTONES
+========================================= */
 
 newGameButton.addEventListener(
     "click",
@@ -1048,9 +1285,9 @@ modeElement.addEventListener(
 );
 
 
-/* =====================================
+/* =========================================
    INICIAR
-===================================== */
+========================================= */
 
 newGame();
 

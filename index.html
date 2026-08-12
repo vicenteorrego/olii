@@ -3,32 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ajedrez</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
 
+html,
 body {
     margin: 0;
-    min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     font-family: Arial, sans-serif;
 }
 
-/* =========================
+/* =====================================================
    INICIO
-========================= */
+===================================================== */
 
 #home {
-    min-height: 100vh;
+    width: 100%;
+    height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     position: relative;
     overflow: hidden;
+
     background:
         radial-gradient(circle at 15% 20%, #ff6b6b, transparent 25%),
         radial-gradient(circle at 85% 20%, #4dabf7, transparent 25%),
@@ -38,51 +47,81 @@ body {
 
 .home-card {
     width: min(90%, 560px);
+
     padding: 45px 30px;
+
     text-align: center;
+
     border-radius: 28px;
+
     background: rgba(255,255,255,.95);
-    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.3);
+
     position: relative;
+
     z-index: 2;
 }
 
 .logo {
     font-size: 80px;
-    margin-bottom: 5px;
 }
 
 .title {
     margin: 0;
+
     font-size: 58px;
+
     font-weight: bold;
-    background: linear-gradient(
-        90deg,
-        #4285f4,
-        #9c27b0,
-        #ea4335,
-        #fbbc05
-    );
+
+    background:
+        linear-gradient(
+            90deg,
+            #4285f4,
+            #9c27b0,
+            #ea4335,
+            #fbbc05
+        );
+
     -webkit-background-clip: text;
+
     color: transparent;
 }
 
 .subtitle {
     color: #5f6368;
+
     font-size: 19px;
+
     margin: 12px 0 30px;
 }
 
 .start-button {
     border: none;
+
     border-radius: 30px;
+
     padding: 15px 45px;
+
     font-size: 18px;
+
     font-weight: bold;
+
     color: white;
+
     cursor: pointer;
-    background: linear-gradient(90deg, #4285f4, #8e44ad);
-    box-shadow: 0 7px 20px rgba(0,0,0,.2);
+
+    background:
+        linear-gradient(
+            90deg,
+            #4285f4,
+            #8e44ad
+        );
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.2);
+
     transition: .2s;
 }
 
@@ -92,34 +131,75 @@ body {
 
 .floating {
     position: absolute;
+
     color: white;
+
     opacity: .15;
+
     font-size: 100px;
+
     animation: float 5s infinite ease-in-out;
 }
 
-.f1 { left: 8%; top: 15%; }
-.f2 { right: 8%; top: 18%; animation-delay: 1s; }
-.f3 { left: 12%; bottom: 10%; animation-delay: 2s; }
-.f4 { right: 12%; bottom: 12%; animation-delay: 3s; }
-
-@keyframes float {
-    0%,100% {
-        transform: translateY(0) rotate(-5deg);
-    }
-    50% {
-        transform: translateY(-20px) rotate(5deg);
-    }
+.f1 {
+    left: 8%;
+    top: 15%;
 }
 
-/* =========================
+.f2 {
+    right: 8%;
+    top: 18%;
+
+    animation-delay: 1s;
+}
+
+.f3 {
+    left: 12%;
+    bottom: 10%;
+
+    animation-delay: 2s;
+}
+
+.f4 {
+    right: 12%;
+    bottom: 12%;
+
+    animation-delay: 3s;
+}
+
+@keyframes float {
+
+    0%,100% {
+        transform:
+            translateY(0)
+            rotate(-5deg);
+    }
+
+    50% {
+        transform:
+            translateY(-20px)
+            rotate(5deg);
+    }
+
+}
+
+
+/* =====================================================
    JUEGO
-========================= */
+===================================================== */
 
 #game {
+
     display: none;
-    min-height: 100vh;
-    padding: 20px;
+
+    width: 100%;
+
+    height: 100vh;
+
+    overflow: hidden;
+
+    padding: 8px 15px;
+
     background:
         radial-gradient(
             circle at 50% 0%,
@@ -132,150 +212,372 @@ body {
             #172333 60%,
             #101722
         );
+
     color: white;
 }
 
 .game-container {
+
     width: 100%;
-    max-width: 900px;
+
+    height: 100%;
+
+    max-width: 1050px;
+
     margin: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
 }
 
+
+/* =====================================================
+   CABECERA
+===================================================== */
+
 .game-header {
+
+    height: 45px;
+
+    flex-shrink: 0;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
-    margin-bottom: 12px;
 }
 
 .game-title {
+
     margin: 0;
-    font-size: 30px;
-    text-shadow: 0 2px 5px black;
+
+    font-size: 27px;
+
+    text-shadow:
+        0 2px 5px black;
 }
 
 .back-button {
+
     border: 1px solid rgba(255,255,255,.3);
+
     background: rgba(255,255,255,.12);
+
     color: white;
-    padding: 8px 14px;
+
+    padding: 7px 13px;
+
     border-radius: 7px;
+
     cursor: pointer;
 }
 
 .back-button:hover {
-    background: rgba(255,255,255,.25);
+
+    background:
+        rgba(255,255,255,.25);
+
 }
 
-/* =========================
-   ZONA PRINCIPAL
-========================= */
+
+/* =====================================================
+   ZONA DE JUEGO
+===================================================== */
 
 .game-area {
+
+    flex: 1;
+
+    min-height: 0;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     gap: 25px;
 }
 
-/* =========================
+
+/* =====================================================
    MARCADOR
-========================= */
+===================================================== */
 
 .scoreboard {
+
     width: 140px;
+
     flex-shrink: 0;
+
     display: flex;
+
     flex-direction: column;
+
     gap: 12px;
 }
 
 .score-card {
+
     background: white;
+
     color: #202124;
+
     border-radius: 14px;
+
     padding: 14px 10px;
+
     text-align: center;
-    box-shadow: 0 7px 18px rgba(0,0,0,.35);
+
+    box-shadow:
+        0 7px 18px rgba(0,0,0,.35);
 }
 
 .score-name {
+
     font-size: 14px;
+
     color: #5f6368;
+
     margin-bottom: 5px;
 }
 
 .score {
+
     font-size: 32px;
+
     font-weight: bold;
 }
 
 .rounds {
+
     text-align: center;
+
     font-size: 13px;
+
     color: #e5e7eb;
 }
 
-/* =========================
+
+/* =====================================================
    SECCIÓN TABLERO
-========================= */
+===================================================== */
 
 .board-section {
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
+    justify-content: center;
 }
 
-/* =========================
+
+/* =====================================================
+   SILLAS
+===================================================== */
+
+.chair {
+
+    width: 145px;
+
+    height: 55px;
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-end;
+
+    margin: 2px 0;
+
+}
+
+
+/* respaldo */
+
+.chair-back {
+
+    position: absolute;
+
+    width: 100px;
+
+    height: 35px;
+
+    left: 22px;
+
+    top: 0;
+
+    border-radius:
+        15px 15px 7px 7px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5b351b,
+            #8b5428,
+            #4d2b15
+        );
+
+    border: 4px solid #3e210f;
+
+    box-shadow:
+        inset 0 2px 3px rgba(255,255,255,.15),
+        0 4px 7px rgba(0,0,0,.4);
+}
+
+
+/* asiento */
+
+.chair-seat {
+
+    width: 125px;
+
+    height: 22px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4d2b15,
+            #7b4722,
+            #4d2b15
+        );
+
+    border: 4px solid #3e210f;
+
+    position: relative;
+
+    z-index: 2;
+
+    box-shadow:
+        0 5px 7px rgba(0,0,0,.4);
+}
+
+
+/* patas */
+
+.chair-legs {
+
+    position: absolute;
+
+    bottom: -8px;
+
+    width: 105px;
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.chair-leg {
+
+    width: 9px;
+
+    height: 18px;
+
+    background: #3e210f;
+
+    border-radius: 2px;
+}
+
+
+/* silla de arriba invertida */
+
+.chair.top {
+
+    transform: rotate(180deg);
+
+}
+
+
+/* =====================================================
    CONTROLES
-========================= */
+===================================================== */
 
 .controls {
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 7px;
+
     flex-wrap: wrap;
-    margin-bottom: 6px;
+
+    margin-bottom: 3px;
 }
 
 .controls label {
-    font-size: 14px;
+
+    font-size: 13px;
 }
 
 select,
 .new-game-button {
+
     border: none;
-    padding: 8px 12px;
+
+    padding: 7px 11px;
+
     border-radius: 6px;
-    font-size: 14px;
+
+    font-size: 13px;
+
     cursor: pointer;
 }
 
 .new-game-button {
+
     background: #1a73e8;
+
     color: white;
 }
 
 .new-game-button:hover {
+
     background: #1765c1;
 }
 
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
 #status {
-    min-height: 25px;
-    margin: 4px 0 8px;
-    font-size: 17px;
+
+    min-height: 22px;
+
+    margin: 2px 0 4px;
+
+    font-size: 16px;
+
     font-weight: bold;
-    text-shadow: 0 2px 4px black;
+
+    text-shadow:
+        0 2px 4px black;
 }
 
-/* =========================
+
+/* =====================================================
    MESA
-========================= */
+===================================================== */
 
 .table {
-    padding: 25px;
-    border-radius: 18px;
+
+    padding: 22px;
+
+    border-radius: 17px;
 
     background:
         repeating-linear-gradient(
@@ -286,7 +588,7 @@ select,
             #6a3b1b 105px
         );
 
-    border: 8px solid #3e210f;
+    border: 7px solid #3e210f;
 
     box-shadow:
         0 20px 35px rgba(0,0,0,.6),
@@ -294,17 +596,24 @@ select,
         inset 0 -5px 12px rgba(0,0,0,.4);
 }
 
-/* =========================
+
+/* =====================================================
    TABLERO
-========================= */
+===================================================== */
 
 .board {
-    width: 480px;
-    height: 480px;
+
+    width: min(480px, 58vh);
+
+    height: min(480px, 58vh);
 
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+
+    grid-template-columns:
+        repeat(8, 1fr);
+
+    grid-template-rows:
+        repeat(8, 1fr);
 
     border: 4px solid #211208;
 
@@ -313,11 +622,17 @@ select,
 }
 
 .square {
+
     position: relative;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     cursor: pointer;
+
     user-select: none;
 }
 
@@ -329,16 +644,23 @@ select,
     background: #b58863;
 }
 
-/* =========================
+
+/* =====================================================
    PIEZAS
-========================= */
+===================================================== */
 
 .piece {
-    font-size: 42px;
+
+    font-size: min(42px, 5.1vh);
+
     line-height: 1;
+
     pointer-events: none;
+
     z-index: 2;
-    text-shadow: 1px 2px 2px rgba(0,0,0,.5);
+
+    text-shadow:
+        1px 2px 2px rgba(0,0,0,.5);
 }
 
 .white-piece {
@@ -350,105 +672,130 @@ select,
 }
 
 .selected {
-    box-shadow: inset 0 0 0 4px #34a853;
+
+    box-shadow:
+        inset 0 0 0 4px #34a853;
 }
 
 .possible::after {
+
     content: "";
+
     position: absolute;
-    width: 15px;
-    height: 15px;
+
+    width: 14px;
+
+    height: 14px;
+
     border-radius: 50%;
-    background: rgba(0,0,0,.3);
+
+    background:
+        rgba(0,0,0,.3);
 }
 
 .capture {
-    box-shadow: inset 0 0 0 4px #ea4335;
+
+    box-shadow:
+        inset 0 0 0 4px #ea4335;
 }
 
 .check {
-    box-shadow: inset 0 0 0 5px #ea4335;
+
+    box-shadow:
+        inset 0 0 0 5px #ea4335;
 }
 
-/* =========================
-   MENSAJE GANADOR
-========================= */
+
+/* =====================================================
+   GANADOR
+===================================================== */
 
 #winnerMessage {
+
     display: none;
-    margin: 8px auto;
-    padding: 11px 18px;
-    border-radius: 12px;
+
+    margin: 5px auto;
+
+    padding: 9px 16px;
+
+    border-radius: 10px;
+
     background: #ffe69c;
+
     color: #664d03;
+
     font-weight: bold;
-    box-shadow: 0 3px 10px rgba(0,0,0,.3);
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.3);
 }
 
 .info {
-    margin-top: 9px;
-    color: rgba(255,255,255,.75);
-    font-size: 13px;
+
+    margin-top: 5px;
+
+    color: rgba(255,255,255,.7);
+
+    font-size: 12px;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
+/* =====================================================
+   PANTALLAS PEQUEÑAS
+===================================================== */
 
 @media (max-width: 800px) {
 
+    #game {
+        overflow-y: auto;
+    }
+
     .game-area {
+
         flex-direction: column;
+
+        justify-content: flex-start;
+
+        padding-top: 5px;
     }
 
     .scoreboard {
+
         width: auto;
+
         flex-direction: row;
-        justify-content: center;
-        order: -1;
-    }
 
-    .score-card {
-        min-width: 120px;
-    }
-}
-
-@media (max-width: 550px) {
-
-    .title {
-        font-size: 45px;
-    }
-
-    .logo {
-        font-size: 65px;
+        order: 2;
     }
 
     .board {
-        width: 82vw;
-        height: 82vw;
+
+        width: min(82vw, 480px);
+
+        height: min(82vw, 480px);
     }
 
     .piece {
+
         font-size: 9vw;
     }
 
-    .table {
-        padding: 12px;
-        border-width: 5px;
+    .chair {
+
+        display: none;
     }
 
-    .game-title {
-        font-size: 24px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- =========================
+
+<!-- =====================================================
      INICIO
-========================= -->
+===================================================== -->
 
 <section id="home">
 
@@ -457,9 +804,12 @@ select,
     <div class="floating f3">♜</div>
     <div class="floating f4">♛</div>
 
+
     <div class="home-card">
 
-        <div class="logo">♟</div>
+        <div class="logo">
+            ♟
+        </div>
 
         <h1 class="title">
             Ajedrez
@@ -481,13 +831,14 @@ select,
 </section>
 
 
-<!-- =========================
+<!-- =====================================================
      JUEGO
-========================= -->
+===================================================== -->
 
 <section id="game">
 
     <div class="game-container">
+
 
         <div class="game-header">
 
@@ -506,6 +857,7 @@ select,
 
 
         <div class="game-area">
+
 
             <!-- MARCADOR -->
 
@@ -552,6 +904,7 @@ select,
                 <div class="rounds">
 
                     Rondas jugadas:
+
                     <strong id="roundCount">
                         0
                     </strong>
@@ -564,6 +917,28 @@ select,
             <!-- TABLERO -->
 
             <div class="board-section">
+
+
+                <!-- SILLA DE ARRIBA -->
+
+                <div class="chair top">
+
+                    <div class="chair-back"></div>
+
+                    <div class="chair-seat"></div>
+
+                    <div class="chair-legs">
+
+                        <div class="chair-leg"></div>
+
+                        <div class="chair-leg"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTROLES -->
 
                 <div class="controls">
 
@@ -583,6 +958,7 @@ select,
 
                     </select>
 
+
                     <button
                         class="new-game-button"
                         id="newGame"
@@ -601,6 +977,8 @@ select,
                 <div id="winnerMessage"></div>
 
 
+                <!-- MESA -->
+
                 <div class="table">
 
                     <div
@@ -611,8 +989,30 @@ select,
                 </div>
 
 
+                <!-- SILLA DE ABAJO -->
+
+                <div class="chair bottom">
+
+                    <div class="chair-back"></div>
+
+                    <div class="chair-seat"></div>
+
+                    <div class="chair-legs">
+
+                        <div class="chair-leg"></div>
+
+                        <div class="chair-leg"></div>
+
+                    </div>
+
+                </div>
+
+
                 <div class="info">
-                    Haz clic en una pieza y después en la casilla donde quieres moverla.
+
+                    Haz clic en una pieza y después
+                    en la casilla donde quieres moverla.
+
                 </div>
 
             </div>
@@ -626,9 +1026,9 @@ select,
 
 <script>
 
-/* =========================
+/* =====================================================
    PANTALLAS
-========================= */
+===================================================== */
 
 const home =
     document.getElementById("home");
@@ -636,26 +1036,38 @@ const home =
 const game =
     document.getElementById("game");
 
-document.getElementById("startButton")
-    .addEventListener("click", () => {
 
-        home.style.display = "none";
-        game.style.display = "block";
+document
+    .getElementById("startButton")
+    .addEventListener(
+        "click",
+        () => {
 
-    });
+            home.style.display = "none";
 
-document.getElementById("backButton")
-    .addEventListener("click", () => {
+            game.style.display = "block";
 
-        game.style.display = "none";
-        home.style.display = "flex";
-
-    });
+        }
+    );
 
 
-/* =========================
+document
+    .getElementById("backButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            game.style.display = "none";
+
+            home.style.display = "flex";
+
+        }
+    );
+
+
+/* =====================================================
    AJEDREZ
-========================= */
+===================================================== */
 
 let chess = new Chess();
 
@@ -672,9 +1084,9 @@ let rounds = 0;
 let gameCounted = false;
 
 
-/* =========================
+/* =====================================================
    PIEZAS
-========================= */
+===================================================== */
 
 const symbols = {
 
@@ -695,9 +1107,9 @@ const symbols = {
 };
 
 
-/* =========================
+/* =====================================================
    ELEMENTOS
-========================= */
+===================================================== */
 
 const boardElement =
     document.getElementById("board");
@@ -727,35 +1139,46 @@ const blackName =
     document.getElementById("blackName");
 
 
-/* =========================
+/* =====================================================
    MARCADOR
-========================= */
+===================================================== */
 
 function updateScoreboard() {
 
-    whiteScore.textContent = whiteWins;
+    whiteScore.textContent =
+        whiteWins;
 
-    blackScore.textContent = blackWins;
+    blackScore.textContent =
+        blackWins;
 
-    roundCount.textContent = rounds;
+    roundCount.textContent =
+        rounds;
+
 
     if (modeElement.value === "1") {
 
-        whiteName.textContent = "♔ Jugador";
-        blackName.textContent = "♚ Computadora";
+        whiteName.textContent =
+            "♔ Jugador";
+
+        blackName.textContent =
+            "♚ Computadora";
 
     } else {
 
-        whiteName.textContent = "♔ Blancas";
-        blackName.textContent = "♚ Negras";
+        whiteName.textContent =
+            "♔ Blancas";
+
+        blackName.textContent =
+            "♚ Negras";
 
     }
+
 }
 
 
-/* =========================
+/* =====================================================
    NUEVA PARTIDA
-========================= */
+===================================================== */
 
 function newGame() {
 
@@ -767,58 +1190,82 @@ function newGame() {
 
     gameCounted = false;
 
-    winnerMessage.style.display = "none";
+    winnerMessage.style.display =
+        "none";
 
-    winnerMessage.textContent = "";
+    winnerMessage.textContent =
+        "";
 
     drawBoard();
 
     updateStatus();
 
     updateScoreboard();
+
 }
 
 
-/* =========================
+/* =====================================================
    DIBUJAR TABLERO
-========================= */
+===================================================== */
 
 function drawBoard() {
 
     boardElement.innerHTML = "";
 
-    const board = chess.board();
+    const board =
+        chess.board();
 
-    for (let row = 0; row < 8; row++) {
 
-        for (let col = 0; col < 8; col++) {
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
 
             const square =
                 document.createElement("div");
 
+
             square.className =
                 "square " +
-                ((row + col) % 2 === 0
-                    ? "light"
-                    : "dark");
+                (
+                    (row + col) % 2 === 0
+                        ? "light"
+                        : "dark"
+                );
+
 
             const file =
-                String.fromCharCode(97 + col);
+                String.fromCharCode(
+                    97 + col
+                );
 
-            const rank = 8 - row;
+            const rank =
+                8 - row;
 
             const squareName =
                 file + rank;
+
 
             square.dataset.square =
                 squareName;
 
 
             if (
-                selectedSquare === squareName
+                selectedSquare ===
+                squareName
             ) {
 
-                square.classList.add("selected");
+                square.classList.add(
+                    "selected"
+                );
 
             }
 
@@ -827,38 +1274,54 @@ function drawBoard() {
 
                 const moves =
                     chess.moves({
-                        square: selectedSquare,
-                        verbose: true
+                        square:
+                            selectedSquare,
+
+                        verbose:
+                            true
                     });
+
 
                 const move =
                     moves.find(
-                        m => m.to === squareName
+                        m =>
+                            m.to ===
+                            squareName
                     );
+
 
                 if (move) {
 
                     if (move.captured) {
 
-                        square.classList.add("capture");
+                        square.classList.add(
+                            "capture"
+                        );
 
                     } else {
 
-                        square.classList.add("possible");
+                        square.classList.add(
+                            "possible"
+                        );
 
                     }
 
                 }
+
             }
 
 
             const piece =
                 board[row][col];
 
+
             if (piece) {
 
                 const element =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
+
 
                 element.className =
                     "piece " +
@@ -868,29 +1331,46 @@ function drawBoard() {
                             : "black-piece"
                     );
 
+
                 element.textContent =
                     symbols[
-                        piece.color + piece.type
+                        piece.color +
+                        piece.type
                     ];
 
-                square.appendChild(element);
+
+                square.appendChild(
+                    element
+                );
+
             }
 
 
             square.addEventListener(
                 "click",
-                () => handleSquareClick(squareName)
+                () =>
+                    handleSquareClick(
+                        squareName
+                    )
             );
 
-            boardElement.appendChild(square);
+
+            boardElement.appendChild(
+                square
+            );
+
         }
+
     }
 
 
     if (chess.in_check()) {
 
         const kingSquare =
-            findKingSquare(chess.turn());
+            findKingSquare(
+                chess.turn()
+            );
+
 
         if (kingSquare) {
 
@@ -899,27 +1379,47 @@ function drawBoard() {
                     `[data-square="${kingSquare}"]`
                 );
 
+
             if (king) {
-                king.classList.add("check");
+
+                king.classList.add(
+                    "check"
+                );
+
             }
+
         }
+
     }
+
 }
 
 
-/* =========================
+/* =====================================================
    BUSCAR REY
-========================= */
+===================================================== */
 
 function findKingSquare(color) {
 
-    const board = chess.board();
+    const board =
+        chess.board();
 
-    for (let row = 0; row < 8; row++) {
 
-        for (let col = 0; col < 8; col++) {
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
 
-            const piece = board[row][col];
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
+
+            const piece =
+                board[row][col];
+
 
             if (
                 piece &&
@@ -928,21 +1428,27 @@ function findKingSquare(color) {
             ) {
 
                 return (
-                    String.fromCharCode(97 + col) +
+                    String.fromCharCode(
+                        97 + col
+                    ) +
                     (8 - row)
                 );
 
             }
+
         }
+
     }
 
+
     return null;
+
 }
 
 
-/* =========================
-   CLICK EN TABLERO
-========================= */
+/* =====================================================
+   CLICK
+===================================================== */
 
 function handleSquareClick(square) {
 
@@ -950,42 +1456,60 @@ function handleSquareClick(square) {
         return;
     }
 
+
     if (computerThinking) {
         return;
     }
+
 
     if (
         modeElement.value === "1" &&
         chess.turn() === "b"
     ) {
+
         return;
+
     }
 
 
-    const piece = chess.get(square);
+    const piece =
+        chess.get(square);
 
 
     if (selectedSquare) {
 
         const moves =
             chess.moves({
-                square: selectedSquare,
-                verbose: true
+                square:
+                    selectedSquare,
+
+                verbose:
+                    true
             });
+
 
         const move =
             moves.find(
-                m => m.to === square
+                m =>
+                    m.to === square
             );
 
 
         if (move) {
 
             chess.move({
-                from: selectedSquare,
-                to: square,
-                promotion: "q"
+
+                from:
+                    selectedSquare,
+
+                to:
+                    square,
+
+                promotion:
+                    "q"
+
             });
+
 
             selectedSquare = null;
 
@@ -1006,22 +1530,28 @@ function handleSquareClick(square) {
                     computerMove,
                     500
                 );
+
             }
 
+
             return;
+
         }
 
 
         if (
             piece &&
-            piece.color === chess.turn()
+            piece.color ===
+            chess.turn()
         ) {
 
-            selectedSquare = square;
+            selectedSquare =
+                square;
 
             drawBoard();
 
             return;
+
         }
 
 
@@ -1030,24 +1560,29 @@ function handleSquareClick(square) {
         drawBoard();
 
         return;
+
     }
 
 
     if (
         piece &&
-        piece.color === chess.turn()
+        piece.color ===
+        chess.turn()
     ) {
 
-        selectedSquare = square;
+        selectedSquare =
+            square;
 
         drawBoard();
+
     }
+
 }
 
 
-/* =========================
+/* =====================================================
    COMPUTADORA
-========================= */
+===================================================== */
 
 function computerMove() {
 
@@ -1059,12 +1594,14 @@ function computerMove() {
         computerThinking = false;
 
         return;
+
     }
 
 
     const moves =
         chess.moves({
-            verbose: true
+            verbose:
+                true
         });
 
 
@@ -1073,12 +1610,14 @@ function computerMove() {
         computerThinking = false;
 
         return;
+
     }
 
 
     const captures =
         moves.filter(
-            move => move.captured
+            move =>
+                move.captured
         );
 
 
@@ -1091,15 +1630,23 @@ function computerMove() {
     const move =
         choices[
             Math.floor(
-                Math.random() * choices.length
+                Math.random() *
+                choices.length
             )
         ];
 
 
     chess.move({
-        from: move.from,
-        to: move.to,
-        promotion: "q"
+
+        from:
+            move.from,
+
+        to:
+            move.to,
+
+        promotion:
+            "q"
+
     });
 
 
@@ -1108,12 +1655,13 @@ function computerMove() {
     drawBoard();
 
     updateStatus();
+
 }
 
 
-/* =========================
+/* =====================================================
    FINAL DE PARTIDA
-========================= */
+===================================================== */
 
 function finishGame() {
 
@@ -1121,8 +1669,11 @@ function finishGame() {
         !chess.game_over() ||
         gameCounted
     ) {
+
         return;
+
     }
+
 
     gameCounted = true;
 
@@ -1157,15 +1708,18 @@ function finishGame() {
     }
 
 
-    winnerMessage.style.display = "block";
+    winnerMessage.style.display =
+        "block";
+
 
     updateScoreboard();
+
 }
 
 
-/* =========================
+/* =====================================================
    ESTADO
-========================= */
+===================================================== */
 
 function updateStatus() {
 
@@ -1177,6 +1731,7 @@ function updateStatus() {
         finishGame();
 
         return;
+
     }
 
 
@@ -1193,6 +1748,7 @@ function updateStatus() {
         finishGame();
 
         return;
+
     }
 
 
@@ -1205,48 +1761,51 @@ function updateStatus() {
     if (chess.in_check()) {
 
         statusElement.textContent =
-            "⚠️ ¡Jaque! Turno: " + turn;
+            "⚠️ ¡Jaque! Turno: " +
+            turn;
 
     } else {
 
         statusElement.textContent =
-            "Turno: " + turn;
+            "Turno: " +
+            turn;
 
     }
+
 }
 
 
-/* =========================
-   NUEVA PARTIDA
-========================= */
+/* =====================================================
+   BOTONES
+===================================================== */
 
-document.getElementById("newGame")
+document
+    .getElementById("newGame")
     .addEventListener(
         "click",
         newGame
     );
 
 
-/* =========================
-   CAMBIAR MODO
-========================= */
-
 modeElement.addEventListener(
     "change",
     () => {
 
         whiteWins = 0;
+
         blackWins = 0;
+
         rounds = 0;
 
         newGame();
+
     }
 );
 
 
-/* =========================
-   INICIAR
-========================= */
+/* =====================================================
+   INICIO
+===================================================== */
 
 newGame();
 

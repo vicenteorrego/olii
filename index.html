@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Juego de Ajedrez</title>
+<title>Ajedrez</title>
+
+<!-- Motor de ajedrez -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -17,7 +21,12 @@ body {
 
     font-family: Arial, sans-serif;
 
-    background: linear-gradient(135deg, #111827, #1f2937);
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #1f2937
+        );
 
     color: white;
 
@@ -25,44 +34,42 @@ body {
     justify-content: center;
     align-items: center;
 
-    padding: 20px;
+    padding: 15px;
 }
 
 .container {
     width: 100%;
-    max-width: 650px;
+    max-width: 600px;
+
     text-align: center;
 }
 
 h1 {
-    margin: 0 0 15px;
-    font-size: 34px;
-}
+    margin: 0 0 12px;
 
-/* CONTROLES */
+    font-size: 32px;
+}
 
 .controls {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    gap: 10px;
+    gap: 8px;
 
     flex-wrap: wrap;
 
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 select,
 button {
-    padding: 8px 12px;
-
     border: none;
     border-radius: 7px;
 
-    font-size: 14px;
+    padding: 8px 12px;
 
-    cursor: pointer;
+    font-size: 14px;
 }
 
 select {
@@ -73,23 +80,27 @@ select {
 button {
     background: #2563eb;
     color: white;
+
+    cursor: pointer;
 }
 
 button:hover {
     background: #1d4ed8;
 }
 
-/* ESTADO */
-
 #status {
-    margin: 8px 0 12px;
+    min-height: 24px;
 
-    font-size: 18px;
+    margin-bottom: 8px;
+
+    font-size: 17px;
 
     font-weight: bold;
 }
 
-/* TABLERO */
+/* =========================
+   TABLERO
+========================= */
 
 .board {
     width: 480px;
@@ -103,11 +114,12 @@ button:hover {
     display: grid;
 
     grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
 
     border: 5px solid #111;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,.5);
+        0 12px 35px rgba(0,0,0,.55);
 }
 
 /* CASILLAS */
@@ -123,8 +135,6 @@ button:hover {
     cursor: pointer;
 
     user-select: none;
-
-    font-size: 42px;
 }
 
 .light {
@@ -133,6 +143,31 @@ button:hover {
 
 .dark {
     background: #b58863;
+}
+
+/* =========================
+   PIEZAS
+========================= */
+
+.piece {
+    font-size: 42px;
+
+    line-height: 1;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    text-shadow:
+        1px 2px 2px rgba(0,0,0,.5);
+}
+
+.white-piece {
+    color: white;
+}
+
+.black-piece {
+    color: #111;
 }
 
 /* PIEZA SELECCIONADA */
@@ -149,8 +184,8 @@ button:hover {
 
     position: absolute;
 
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
 
     border-radius: 50%;
 
@@ -164,40 +199,24 @@ button:hover {
         inset 0 0 0 4px #ef4444;
 }
 
-/* PIEZAS */
+/* JAQUE */
 
-.piece {
-    position: relative;
-
-    z-index: 2;
-
-    font-size: 42px;
-
-    line-height: 1;
-
-    text-shadow:
-        1px 2px 2px rgba(0,0,0,.5);
+.check {
+    box-shadow:
+        inset 0 0 0 5px #ef4444;
 }
-
-.white-piece {
-    color: white;
-}
-
-.black-piece {
-    color: #111;
-}
-
-/* TEXTO */
 
 .info {
-    margin-top: 12px;
+    margin-top: 10px;
 
     color: #d1d5db;
 
     font-size: 13px;
 }
 
-/* CELULARES */
+/* =========================
+   MÓVIL
+========================= */
 
 @media (max-width: 550px) {
 
@@ -206,21 +225,17 @@ button:hover {
         height: 90vw;
     }
 
-    .square {
-        font-size: 10vw;
-    }
-
     .piece {
-        font-size: 10vw;
+        font-size: 9.5vw;
     }
 
     h1 {
-        font-size: 28px;
+        font-size: 27px;
     }
 }
+
 </style>
 </head>
-
 
 <body>
 
@@ -230,7 +245,7 @@ button:hover {
 
     <div class="controls">
 
-        <label for="mode">
+        <label>
             Modo:
         </label>
 
@@ -252,17 +267,14 @@ button:hover {
 
     </div>
 
-
     <div id="status">
         Turno: Blancas
     </div>
 
-
     <div id="board" class="board"></div>
 
-
     <div class="info">
-        Haz clic en una pieza y luego en una casilla para moverla.
+        Haz clic en una pieza y después en la casilla donde quieres moverla.
     </div>
 
 </div>
@@ -271,17 +283,35 @@ button:hover {
 <script>
 
 /* =====================================
+   MOTOR DE AJEDREZ
+===================================== */
+
+let chess = new Chess();
+
+let selectedSquare = null;
+
+let computerThinking = false;
+
+
+/* =====================================
    PIEZAS
 ===================================== */
 
-const pieces = {
+const symbols = {
 
-    p: "♟",
-    r: "♜",
-    n: "♞",
-    b: "♝",
-    q: "♛",
-    k: "♚"
+    wp: "♙",
+    wr: "♖",
+    wn: "♘",
+    wb: "♗",
+    wq: "♕",
+    wk: "♔",
+
+    bp: "♟",
+    br: "♜",
+    bn: "♞",
+    bb: "♝",
+    bq: "♛",
+    bk: "♚"
 
 };
 
@@ -304,53 +334,20 @@ const newGameButton =
 
 
 /* =====================================
-   VARIABLES
-===================================== */
-
-let board;
-
-let turn;
-
-let selected = null;
-
-let gameOver = false;
-
-
-/* =====================================
    NUEVA PARTIDA
 ===================================== */
 
 function newGame() {
 
-    board = [
+    chess.reset();
 
-        ["br","bn","bb","bq","bk","bb","bn","br"],
+    selectedSquare = null;
 
-        ["bp","bp","bp","bp","bp","bp","bp","bp"],
-
-        [null,null,null,null,null,null,null,null],
-
-        [null,null,null,null,null,null,null,null],
-
-        [null,null,null,null,null,null,null,null],
-
-        [null,null,null,null,null,null,null,null],
-
-        ["wp","wp","wp","wp","wp","wp","wp","wp"],
-
-        ["wr","wn","wb","wq","wk","wb","wn","wr"]
-
-    ];
-
-    turn = "w";
-
-    selected = null;
-
-    gameOver = false;
-
-    updateStatus();
+    computerThinking = false;
 
     drawBoard();
+
+    updateStatus();
 
 }
 
@@ -363,58 +360,111 @@ function drawBoard() {
 
     boardElement.innerHTML = "";
 
-    for (let row = 0; row < 8; row++) {
 
-        for (let col = 0; col < 8; col++) {
+    const board =
+        chess.board();
+
+
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
 
             const square =
                 document.createElement("div");
 
+
+            const isLight =
+                (row + col) % 2 === 0;
+
+
             square.className =
                 "square " +
-                ((row + col) % 2 === 0
-                    ? "light"
-                    : "dark");
+                (
+                    isLight
+                        ? "light"
+                        : "dark"
+                );
+
+
+            /*
+             * Convertir coordenadas
+             *
+             * row 0 = 8
+             * row 7 = 1
+             */
+
+            const file =
+                String.fromCharCode(
+                    97 + col
+                );
+
+            const rank =
+                8 - row;
+
+            const squareName =
+                file + rank;
+
+
+            square.dataset.square =
+                squareName;
 
 
             /* PIEZA SELECCIONADA */
 
             if (
-                selected &&
-                selected.row === row &&
-                selected.col === col
+                selectedSquare ===
+                squareName
             ) {
 
-                square.classList.add("selected");
+                square.classList.add(
+                    "selected"
+                );
 
             }
 
 
             /* MOVIMIENTOS */
 
-            if (selected) {
+            if (selectedSquare) {
 
                 const moves =
-                    getLegalMoves(
-                        selected.row,
-                        selected.col
+                    chess.moves({
+                        square:
+                            selectedSquare,
+
+                        verbose: true
+                    });
+
+
+                const move =
+                    moves.find(
+                        m =>
+                            m.to ===
+                            squareName
                     );
 
-                const possible =
-                    moves.some(move =>
-                        move.row === row &&
-                        move.col === col
-                    );
 
-                if (possible) {
+                if (move) {
 
-                    if (board[row][col]) {
+                    if (move.captured) {
 
-                        square.classList.add("capture");
+                        square.classList.add(
+                            "capture"
+                        );
 
                     } else {
 
-                        square.classList.add("possible");
+                        square.classList.add(
+                            "possible"
+                        );
 
                     }
 
@@ -428,567 +478,92 @@ function drawBoard() {
             const piece =
                 board[row][col];
 
+
             if (piece) {
 
+                const key =
+                    piece.color +
+                    piece.type;
+
+
                 const pieceElement =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
+
 
                 pieceElement.className =
                     "piece " +
                     (
-                        piece[0] === "w"
+                        piece.color === "w"
                             ? "white-piece"
                             : "black-piece"
                     );
 
+
                 pieceElement.textContent =
-                    pieces[piece[1]];
-
-                square.appendChild(pieceElement);
-
-            }
+                    symbols[key];
 
 
-            square.addEventListener(
-                "click",
-                function() {
-
-                    handleSquareClick(row, col);
-
-                }
-            );
-
-
-            boardElement.appendChild(square);
-
-        }
-
-    }
-
-}
-
-
-/* =====================================
-   CLICK EN TABLERO
-===================================== */
-
-function handleSquareClick(row, col) {
-
-    if (gameOver) {
-        return;
-    }
-
-
-    /* No permitir jugar mientras piensa la IA */
-
-    if (
-        modeElement.value === "1" &&
-        turn === "b"
-    ) {
-        return;
-    }
-
-
-    const piece =
-        board[row][col];
-
-
-    /* SI YA HAY UNA PIEZA SELECCIONADA */
-
-    if (selected) {
-
-        const moves =
-            getLegalMoves(
-                selected.row,
-                selected.col
-            );
-
-
-        const validMove =
-            moves.find(move =>
-                move.row === row &&
-                move.col === col
-            );
-
-
-        if (validMove) {
-
-            makeMove(
-                selected.row,
-                selected.col,
-                row,
-                col
-            );
-
-            selected = null;
-
-            drawBoard();
-
-
-            /* TURNO DE LA COMPUTADORA */
-
-            if (
-                !gameOver &&
-                modeElement.value === "1" &&
-                turn === "b"
-            ) {
-
-                setTimeout(
-                    computerMove,
-                    500
+                square.appendChild(
+                    pieceElement
                 );
 
             }
 
-            return;
-        }
 
+            /*
+             * Click
+             */
 
-        /* Seleccionar otra pieza */
+            square.addEventListener(
+                "click",
+                () => {
 
-        if (
-            piece &&
-            piece[0] === turn
-        ) {
-
-            selected = {
-                row: row,
-                col: col
-            };
-
-            drawBoard();
-
-            return;
-        }
-
-
-        selected = null;
-
-        drawBoard();
-
-        return;
-
-    }
-
-
-    /* SELECCIONAR PIEZA */
-
-    if (
-        piece &&
-        piece[0] === turn
-    ) {
-
-        selected = {
-            row: row,
-            col: col
-        };
-
-        drawBoard();
-
-    }
-
-}
-
-
-/* =====================================
-   MOVIMIENTOS LEGALES BÁSICOS
-===================================== */
-
-function getLegalMoves(row, col) {
-
-    const piece =
-        board[row][col];
-
-    if (!piece) {
-        return [];
-    }
-
-    const color =
-        piece[0];
-
-    const type =
-        piece[1];
-
-    let moves = [];
-
-
-    if (type === "p") {
-        moves = pawnMoves(row, col, color);
-    }
-
-
-    if (type === "r") {
-        moves = rookMoves(row, col, color);
-    }
-
-
-    if (type === "b") {
-        moves = bishopMoves(row, col, color);
-    }
-
-
-    if (type === "q") {
-
-        moves = [
-
-            ...rookMoves(row, col, color),
-
-            ...bishopMoves(row, col, color)
-
-        ];
-
-    }
-
-
-    if (type === "n") {
-        moves = knightMoves(row, col, color);
-    }
-
-
-    if (type === "k") {
-        moves = kingMoves(row, col, color);
-    }
-
-
-    return moves.filter(move => {
-
-        const target =
-            board[move.row][move.col];
-
-        return (
-            !target ||
-            target[0] !== color
-        );
-
-    });
-
-}
-
-
-/* =====================================
-   PEÓN
-===================================== */
-
-function pawnMoves(row, col, color) {
-
-    const moves = [];
-
-    const direction =
-        color === "w" ? -1 : 1;
-
-    const startRow =
-        color === "w" ? 6 : 1;
-
-
-    const nextRow =
-        row + direction;
-
-
-    /* Avanzar */
-
-    if (
-        inside(nextRow, col) &&
-        !board[nextRow][col]
-    ) {
-
-        moves.push({
-            row: nextRow,
-            col: col
-        });
-
-
-        /* Dos casillas */
-
-        const doubleRow =
-            row + direction * 2;
-
-        if (
-            row === startRow &&
-            !board[doubleRow][col]
-        ) {
-
-            moves.push({
-                row: doubleRow,
-                col: col
-            });
-
-        }
-
-    }
-
-
-    /* Capturar */
-
-    for (
-        const dc of [-1, 1]
-    ) {
-
-        const r =
-            row + direction;
-
-        const c =
-            col + dc;
-
-
-        if (!inside(r, c)) {
-            continue;
-        }
-
-
-        if (
-            board[r][c] &&
-            board[r][c][0] !== color
-        ) {
-
-            moves.push({
-                row: r,
-                col: c
-            });
-
-        }
-
-    }
-
-
-    return moves;
-
-}
-
-
-/* =====================================
-   TORRE
-===================================== */
-
-function rookMoves(row, col, color) {
-
-    return slidingMoves(
-        row,
-        col,
-        color,
-
-        [
-            [-1,0],
-            [1,0],
-            [0,-1],
-            [0,1]
-        ]
-    );
-
-}
-
-
-/* =====================================
-   ALFIL
-===================================== */
-
-function bishopMoves(row, col, color) {
-
-    return slidingMoves(
-        row,
-        col,
-        color,
-
-        [
-            [-1,-1],
-            [-1,1],
-            [1,-1],
-            [1,1]
-        ]
-    );
-
-}
-
-
-/* =====================================
-   MOVIMIENTOS DESLIZANTES
-===================================== */
-
-function slidingMoves(
-    row,
-    col,
-    color,
-    directions
-) {
-
-    const moves = [];
-
-
-    for (
-        const [dr, dc]
-        of directions
-    ) {
-
-        let r =
-            row + dr;
-
-        let c =
-            col + dc;
-
-
-        while (
-            inside(r, c)
-        ) {
-
-            if (!board[r][c]) {
-
-                moves.push({
-                    row: r,
-                    col: c
-                });
-
-            } else {
-
-                if (
-                    board[r][c][0] !== color
-                ) {
-
-                    moves.push({
-                        row: r,
-                        col: c
-                    });
+                    handleSquareClick(
+                        squareName
+                    );
 
                 }
-
-                break;
-
-            }
+            );
 
 
-            r += dr;
-
-            c += dc;
+            boardElement.appendChild(
+                square
+            );
 
         }
 
     }
 
 
-    return moves;
+    /* MARCAR REY EN JAQUE */
 
-}
+    if (chess.in_check()) {
 
-
-/* =====================================
-   CABALLO
-===================================== */
-
-function knightMoves(
-    row,
-    col,
-    color
-) {
-
-    const moves = [];
+        const currentColor =
+            chess.turn();
 
 
-    const jumps = [
-
-        [-2,-1],
-        [-2,1],
-
-        [-1,-2],
-        [-1,2],
-
-        [1,-2],
-        [1,2],
-
-        [2,-1],
-        [2,1]
-
-    ];
+        const kingSquare =
+            findKingSquare(
+                currentColor
+            );
 
 
-    for (
-        const [dr, dc]
-        of jumps
-    ) {
+        if (kingSquare) {
 
-        const r =
-            row + dr;
-
-        const c =
-            col + dc;
+            const kingElement =
+                document.querySelector(
+                    `[data-square="${kingSquare}"]`
+                );
 
 
-        if (!inside(r, c)) {
-            continue;
-        }
+            if (kingElement) {
 
-
-        if (
-            !board[r][c] ||
-            board[r][c][0] !== color
-        ) {
-
-            moves.push({
-                row: r,
-                col: c
-            });
-
-        }
-
-    }
-
-
-    return moves;
-
-}
-
-
-/* =====================================
-   REY
-===================================== */
-
-function kingMoves(
-    row,
-    col,
-    color
-) {
-
-    const moves = [];
-
-
-    for (
-        let dr = -1;
-        dr <= 1;
-        dr++
-    ) {
-
-        for (
-            let dc = -1;
-            dc <= 1;
-            dc++
-        ) {
-
-            if (
-                dr === 0 &&
-                dc === 0
-            ) {
-                continue;
-            }
-
-
-            const r =
-                row + dr;
-
-            const c =
-                col + dc;
-
-
-            if (!inside(r, c)) {
-                continue;
-            }
-
-
-            if (
-                !board[r][c] ||
-                board[r][c][0] !== color
-            ) {
-
-                moves.push({
-                    row: r,
-                    col: c
-                });
+                kingElement.classList.add(
+                    "check"
+                );
 
             }
 
@@ -996,136 +571,17 @@ function kingMoves(
 
     }
 
-
-    return moves;
-
 }
 
 
 /* =====================================
-   COMPROBAR CASILLA
+   ENCONTRAR REY
 ===================================== */
 
-function inside(row, col) {
+function findKingSquare(color) {
 
-    return (
-        row >= 0 &&
-        row < 8 &&
-        col >= 0 &&
-        col < 8
-    );
-
-}
-
-
-/* =====================================
-   HACER MOVIMIENTO
-===================================== */
-
-function makeMove(
-    fromRow,
-    fromCol,
-    toRow,
-    toCol
-) {
-
-    const piece =
-        board[fromRow][fromCol];
-
-    const captured =
-        board[toRow][toCol];
-
-
-    board[toRow][toCol] =
-        piece;
-
-    board[fromRow][fromCol] =
-        null;
-
-
-    /* PROMOCIÓN */
-
-    if (
-        piece[1] === "p" &&
-        (
-            toRow === 0 ||
-            toRow === 7
-        )
-    ) {
-
-        board[toRow][toCol] =
-            piece[0] + "q";
-
-    }
-
-
-    /* REY CAPTURADO */
-
-    if (
-        captured &&
-        captured[1] === "k"
-    ) {
-
-        gameOver = true;
-
-
-        statusElement.textContent =
-            piece[0] === "w"
-                ? "🏆 ¡Ganan las blancas!"
-                : "🏆 ¡Ganan las negras!";
-
-        return;
-
-    }
-
-
-    /* CAMBIAR TURNO */
-
-    turn =
-        turn === "w"
-            ? "b"
-            : "w";
-
-
-    updateStatus();
-
-}
-
-
-/* =====================================
-   ESTADO
-===================================== */
-
-function updateStatus() {
-
-    if (gameOver) {
-        return;
-    }
-
-
-    statusElement.textContent =
-        turn === "w"
-            ? "Turno: Blancas"
-            : "Turno: Negras";
-
-}
-
-
-/* =====================================
-   COMPUTADORA
-===================================== */
-
-function computerMove() {
-
-    if (
-        gameOver ||
-        turn !== "b"
-    ) {
-        return;
-    }
-
-
-    const possibleMoves = [];
+    const board =
+        chess.board();
 
 
     for (
@@ -1146,32 +602,20 @@ function computerMove() {
 
             if (
                 piece &&
-                piece[0] === "b"
+                piece.color === color &&
+                piece.type === "k"
             ) {
 
-                const moves =
-                    getLegalMoves(
-                        row,
-                        col
+                const file =
+                    String.fromCharCode(
+                        97 + col
                     );
 
+                const rank =
+                    8 - row;
 
-                for (
-                    const move
-                    of moves
-                ) {
 
-                    possibleMoves.push({
-
-                        fromRow: row,
-                        fromCol: col,
-
-                        toRow: move.row,
-                        toCol: move.col
-
-                    });
-
-                }
+                return file + rank;
 
             }
 
@@ -1180,65 +624,416 @@ function computerMove() {
     }
 
 
+    return null;
+
+}
+
+
+/* =====================================
+   CLICK EN CASILLA
+===================================== */
+
+function handleSquareClick(
+    square
+) {
+
     if (
-        possibleMoves.length === 0
+        chess.game_over()
     ) {
+        return;
+    }
 
-        gameOver = true;
 
-        statusElement.textContent =
-            "🏆 ¡Ganan las blancas!";
+    if (computerThinking) {
+        return;
+    }
+
+
+    /*
+     * En modo computadora,
+     * las negras pertenecen a la IA.
+     */
+
+    if (
+        modeElement.value === "1" &&
+        chess.turn() === "b"
+    ) {
+        return;
+    }
+
+
+    const piece =
+        chess.get(square);
+
+
+    /* ================================
+       YA HAY PIEZA SELECCIONADA
+    ================================= */
+
+    if (selectedSquare) {
+
+        const moves =
+            chess.moves({
+                square:
+                    selectedSquare,
+
+                verbose: true
+            });
+
+
+        const move =
+            moves.find(
+                m =>
+                    m.to === square
+            );
+
+
+        /*
+         * MOVIMIENTO VÁLIDO
+         */
+
+        if (move) {
+
+            /*
+             * Promoción automática a dama.
+             */
+
+            chess.move({
+
+                from:
+                    selectedSquare,
+
+                to:
+                    square,
+
+                promotion:
+                    "q"
+
+            });
+
+
+            selectedSquare = null;
+
+
+            drawBoard();
+
+            updateStatus();
+
+
+            /*
+             * Computadora
+             */
+
+            if (
+                !chess.game_over() &&
+                modeElement.value === "1" &&
+                chess.turn() === "b"
+            ) {
+
+                computerThinking = true;
+
+
+                setTimeout(
+                    computerMove,
+                    500
+                );
+
+            }
+
+
+            return;
+
+        }
+
+
+        /*
+         * Si hizo click en otra
+         * pieza de su color
+         */
+
+        if (
+            piece &&
+            piece.color ===
+            chess.turn()
+        ) {
+
+            selectedSquare =
+                square;
+
+            drawBoard();
+
+            return;
+
+        }
+
+
+        /*
+         * Quitar selección
+         */
+
+        selectedSquare = null;
+
+        drawBoard();
 
         return;
 
     }
 
 
-    /* Preferir capturas */
+    /* ================================
+       SELECCIONAR PIEZA
+    ================================= */
 
-    const captures =
-        possibleMoves.filter(move =>
-            board[
-                move.toRow
-            ][
-                move.toCol
-            ]
-        );
+    if (
+        piece &&
+        piece.color ===
+        chess.turn()
+    ) {
 
+        selectedSquare =
+            square;
 
-    const choices =
-        captures.length > 0
-            ? captures
-            : possibleMoves;
+        drawBoard();
 
-
-    const move =
-        choices[
-            Math.floor(
-                Math.random() *
-                choices.length
-            )
-        ];
-
-
-    makeMove(
-
-        move.fromRow,
-        move.fromCol,
-
-        move.toRow,
-        move.toCol
-
-    );
-
-
-    drawBoard();
+    }
 
 }
 
 
 /* =====================================
-   BOTONES
+   COMPUTADORA
+===================================== */
+
+function computerMove() {
+
+    if (
+        chess.game_over() ||
+        chess.turn() !== "b"
+    ) {
+
+        computerThinking = false;
+
+        return;
+    }
+
+
+    const moves =
+        chess.moves({
+            verbose: true
+        });
+
+
+    if (
+        moves.length === 0
+    ) {
+
+        computerThinking = false;
+
+        updateStatus();
+
+        return;
+
+    }
+
+
+    /*
+     * Buscar capturas primero.
+     *
+     * Esto hace que la computadora
+     * intente "comerse" piezas.
+     */
+
+    const captures =
+        moves.filter(
+            move =>
+                move.captured
+        );
+
+
+    let possibleMoves =
+        captures.length > 0
+            ? captures
+            : moves;
+
+
+    /*
+     * Si puede dar jaque,
+     * darle prioridad.
+     */
+
+    const checkingMoves =
+        possibleMoves.filter(
+            move => {
+
+                const copy =
+                    new Chess(
+                        chess.fen()
+                    );
+
+
+                try {
+
+                    copy.move({
+                        from: move.from,
+                        to: move.to,
+                        promotion: "q"
+                    });
+
+                    return copy.in_check();
+
+                } catch {
+
+                    return false;
+
+                }
+
+            }
+        );
+
+
+    if (
+        checkingMoves.length > 0
+    ) {
+
+        possibleMoves =
+            checkingMoves;
+
+    }
+
+
+    /*
+     * Elegir movimiento
+     */
+
+    const move =
+        possibleMoves[
+            Math.floor(
+                Math.random() *
+                possibleMoves.length
+            )
+        ];
+
+
+    /*
+     * Hacer movimiento
+     */
+
+    chess.move({
+
+        from:
+            move.from,
+
+        to:
+            move.to,
+
+        promotion:
+            "q"
+
+    });
+
+
+    computerThinking = false;
+
+    drawBoard();
+
+    updateStatus();
+
+}
+
+
+/* =====================================
+   ESTADO
+===================================== */
+
+function updateStatus() {
+
+    if (
+        chess.in_checkmate()
+    ) {
+
+        const winner =
+            chess.turn() === "w"
+                ? "negras"
+                : "blancas";
+
+
+        statusElement.textContent =
+            "🏆 ¡Jaque mate! Ganan las " +
+            winner +
+            ".";
+
+
+        return;
+
+    }
+
+
+    if (
+        chess.in_stalemate()
+    ) {
+
+        statusElement.textContent =
+            "🤝 ¡Tablas por ahogado!";
+
+
+        return;
+
+    }
+
+
+    if (
+        chess.isThreefoldRepetition()
+    ) {
+
+        statusElement.textContent =
+            "🤝 ¡Tablas por repetición!";
+
+
+        return;
+
+    }
+
+
+    if (
+        chess.insufficient_material()
+    ) {
+
+        statusElement.textContent =
+            "🤝 ¡Tablas! Material insuficiente.";
+
+
+        return;
+
+    }
+
+
+    const turnText =
+        chess.turn() === "w"
+            ? "Blancas"
+            : "Negras";
+
+
+    if (
+        chess.in_check()
+    ) {
+
+        statusElement.textContent =
+            "⚠️ ¡Jaque! Turno: " +
+            turnText;
+
+    } else {
+
+        statusElement.textContent =
+            "Turno: " +
+            turnText;
+
+    }
+
+}
+
+
+/* =====================================
+   EVENTOS
 ===================================== */
 
 newGameButton.addEventListener(

@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ajedrez</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-
-<style>
-
 /* =====================================================
    GENERAL
 ===================================================== */
@@ -71,9 +59,6 @@ body {
         );
 }
 
-
-/* Piezas decorativas */
-
 .floating-piece {
     position: absolute;
 
@@ -94,24 +79,20 @@ body {
 .piece2 {
     right: 10%;
     top: 20%;
-
     animation-delay: 1s;
 }
 
 .piece3 {
     left: 15%;
     bottom: 12%;
-
     animation-delay: 2s;
 }
 
 .piece4 {
     right: 15%;
     bottom: 10%;
-
     animation-delay: 3s;
 }
-
 
 @keyframes float {
 
@@ -122,11 +103,7 @@ body {
     50% {
         transform: translateY(-20px) rotate(5deg);
     }
-
 }
-
-
-/* Tarjeta principal */
 
 .home-card {
     position: relative;
@@ -147,9 +124,6 @@ body {
     backdrop-filter: blur(10px);
 }
 
-
-/* Logo */
-
 .logo {
     font-size: 80px;
 
@@ -162,9 +136,6 @@ body {
             0 8px 5px rgba(0,0,0,.2)
         );
 }
-
-
-/* Título */
 
 .title {
     margin: 0;
@@ -188,7 +159,6 @@ body {
     color: transparent;
 }
 
-
 .subtitle {
     margin: 12px 0 30px;
 
@@ -196,9 +166,6 @@ body {
 
     color: #5f6368;
 }
-
-
-/* Botón */
 
 .start-button {
     border: none;
@@ -228,7 +195,6 @@ body {
     transition: .25s;
 }
 
-
 .start-button:hover {
     transform: translateY(-3px) scale(1.04);
 
@@ -238,7 +204,7 @@ body {
 
 
 /* =====================================================
-   JUEGO
+   PANTALLA DEL JUEGO
 ===================================================== */
 
 #game {
@@ -246,29 +212,77 @@ body {
 
     min-height: 100vh;
 
+    padding: 25px 20px 50px;
+
+    /*
+       Pared / fondo de la sala
+    */
+
     background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,255,255,.18),
+            transparent 35%
+        ),
         linear-gradient(
-            135deg,
-            #eef2ff,
-            #f8f9fa
+            180deg,
+            #26374a 0%,
+            #172333 55%,
+            #111827 100%
         );
 
-    padding: 25px 15px 40px;
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/*
+   Luz ambiental
+*/
+
+#game::before {
+    content: "";
+
+    position: absolute;
+
+    top: -150px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 700px;
+    height: 400px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,230,170,.18),
+            transparent 70%
+        );
+
+    pointer-events: none;
 }
 
 
 .game-container {
     width: 100%;
 
-    max-width: 650px;
+    max-width: 900px;
 
     margin: auto;
 
     text-align: center;
+
+    position: relative;
+
+    z-index: 2;
 }
 
 
-/* Cabecera */
+/* =====================================================
+   CABECERA
+===================================================== */
 
 .game-header {
     display: flex;
@@ -277,25 +291,26 @@ body {
 
     justify-content: space-between;
 
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
-
 
 .game-title {
     margin: 0;
 
-    font-size: 28px;
+    font-size: 30px;
 
-    font-weight: 700;
+    color: white;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.4);
 }
 
-
 .back-button {
-    border: 1px solid #dadce0;
+    border: 1px solid rgba(255,255,255,.3);
 
-    background: white;
+    background: rgba(255,255,255,.12);
 
-    color: #1a73e8;
+    color: white;
 
     border-radius: 7px;
 
@@ -304,56 +319,78 @@ body {
     cursor: pointer;
 }
 
-
 .back-button:hover {
-    background: #f1f3f4;
+    background: rgba(255,255,255,.2);
 }
 
 
 /* =====================================================
-   MARCADOR
+   ZONA DE PARTIDA
 ===================================================== */
 
-.scoreboard {
+.game-area {
+
     display: flex;
+
+    align-items: center;
 
     justify-content: center;
 
+    gap: 28px;
+
+    margin-top: 10px;
+}
+
+
+/* =====================================================
+   MARCADOR A LA IZQUIERDA
+===================================================== */
+
+.scoreboard {
+
+    width: 145px;
+
+    display: flex;
+
+    flex-direction: column;
+
     gap: 12px;
 
-    margin: 10px auto 15px;
-
-    flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 
 .score-card {
-    min-width: 135px;
 
-    padding: 10px 18px;
+    padding: 14px 10px;
 
-    border-radius: 12px;
+    border-radius: 14px;
 
-    background: white;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.98),
+            rgba(235,235,235,.95)
+        );
 
     box-shadow:
-        0 2px 8px rgba(0,0,0,.12);
+        0 6px 15px rgba(0,0,0,.3);
 
-    border: 1px solid #e0e0e0;
+    border: 2px solid rgba(255,255,255,.4);
 }
 
 
 .score-name {
-    font-size: 13px;
+    font-size: 14px;
 
     color: #5f6368;
 
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 
 .score {
-    font-size: 28px;
+    font-size: 32px;
 
     font-weight: bold;
 
@@ -362,11 +399,25 @@ body {
 
 
 .rounds {
-    margin-top: 5px;
-
-    color: #5f6368;
+    margin-top: 10px;
 
     font-size: 13px;
+
+    color: rgba(255,255,255,.8);
+}
+
+
+/* =====================================================
+   PARTE DEL TABLERO
+===================================================== */
+
+.board-section {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
 }
 
 
@@ -385,16 +436,14 @@ body {
 
     flex-wrap: wrap;
 
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
-
 .controls label {
-    color: #5f6368;
+    color: #e5e7eb;
 
     font-size: 14px;
 }
-
 
 select,
 .new-game-button {
@@ -413,7 +462,6 @@ select,
     cursor: pointer;
 }
 
-
 .new-game-button {
     background: #1a73e8;
 
@@ -421,7 +469,6 @@ select,
 
     border-color: #1a73e8;
 }
-
 
 .new-game-button:hover {
     background: #1765c1;
@@ -435,11 +482,76 @@ select,
 #status {
     min-height: 25px;
 
-    margin: 8px 0 10px;
+    margin: 5px 0 8px;
 
     font-size: 17px;
 
     font-weight: 600;
+
+    color: white;
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,.5);
+}
+
+
+/* =====================================================
+   MESA DE MADERA
+===================================================== */
+
+.table {
+
+    padding: 32px;
+
+    border-radius: 18px;
+
+    /*
+       Madera
+    */
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #6b3f20 0px,
+            #7b4a25 35px,
+            #5b351b 70px,
+            #70421f 105px
+        );
+
+    box-shadow:
+        0 18px 35px rgba(0,0,0,.55),
+        inset 0 2px 5px rgba(255,255,255,.12),
+        inset 0 -5px 12px rgba(0,0,0,.35);
+
+    border: 8px solid #4a2a16;
+
+    position: relative;
+}
+
+
+/*
+   Brillo de la madera
+*/
+
+.table::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            115deg,
+            rgba(255,255,255,.08),
+            transparent 35%,
+            rgba(0,0,0,.1)
+        );
+
+    pointer-events: none;
 }
 
 
@@ -452,9 +564,9 @@ select,
 
     height: 480px;
 
-    max-width: 90vw;
+    max-width: 80vw;
 
-    max-height: 90vw;
+    max-height: 80vw;
 
     margin: auto;
 
@@ -464,10 +576,14 @@ select,
 
     grid-template-rows: repeat(8, 1fr);
 
-    border: 4px solid #3c4043;
+    border: 4px solid #24150c;
 
     box-shadow:
-        0 8px 25px rgba(0,0,0,.2);
+        0 8px 18px rgba(0,0,0,.5);
+
+    position: relative;
+
+    z-index: 2;
 }
 
 
@@ -485,11 +601,9 @@ select,
     user-select: none;
 }
 
-
 .light {
     background: #f0d9b5;
 }
-
 
 .dark {
     background: #b58863;
@@ -512,25 +626,21 @@ select,
     z-index: 2;
 
     text-shadow:
-        1px 2px 2px rgba(0,0,0,.45);
+        1px 2px 2px rgba(0,0,0,.5);
 }
-
 
 .white-piece {
     color: white;
 }
 
-
 .black-piece {
     color: #111;
 }
-
 
 .selected {
     box-shadow:
         inset 0 0 0 4px #34a853;
 }
-
 
 .possible::after {
     content: "";
@@ -545,12 +655,10 @@ select,
     background: rgba(0,0,0,.3);
 }
 
-
 .capture {
     box-shadow:
         inset 0 0 0 4px #ea4335;
 }
-
 
 .check {
     box-shadow:
@@ -559,13 +667,13 @@ select,
 
 
 /* =====================================================
-   MENSAJE DE VICTORIA
+   VICTORIA
 ===================================================== */
 
 #winnerMessage {
     display: none;
 
-    margin: 12px auto;
+    margin: 10px auto;
 
     padding: 12px;
 
@@ -587,22 +695,49 @@ select,
     font-weight: bold;
 
     box-shadow:
-        0 3px 10px rgba(0,0,0,.12);
+        0 3px 10px rgba(0,0,0,.3);
 }
 
 
 .info {
     margin-top: 10px;
 
-    color: #5f6368;
+    color: rgba(255,255,255,.75);
 
     font-size: 13px;
 }
 
 
 /* =====================================================
-   RESPONSIVE
+   MÓVIL
 ===================================================== */
+
+@media (max-width: 850px) {
+
+    .game-area {
+        flex-direction: column;
+    }
+
+    .scoreboard {
+        width: auto;
+
+        flex-direction: row;
+
+        justify-content: center;
+
+        order: -1;
+    }
+
+    .score-card {
+        min-width: 120px;
+    }
+
+    .rounds {
+        order: -1;
+    }
+
+}
+
 
 @media (max-width: 550px) {
 
@@ -619,1168 +754,21 @@ select,
     }
 
     .board {
-        width: 90vw;
-        height: 90vw;
+        width: 85vw;
+        height: 85vw;
     }
 
     .piece {
-        font-size: 9.5vw;
+        font-size: 9vw;
+    }
+
+    .table {
+        padding: 15px;
+        border-width: 5px;
     }
 
     .game-header {
         padding: 0 5px;
     }
 
-    .floating-piece {
-        font-size: 60px;
-    }
-
 }
-
-</style>
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     INICIO
-===================================================== -->
-
-<section id="home">
-
-    <div class="floating-piece piece1">♟</div>
-    <div class="floating-piece piece2">♞</div>
-    <div class="floating-piece piece3">♜</div>
-    <div class="floating-piece piece4">♛</div>
-
-
-    <div class="home-card">
-
-        <div class="logo">
-            ♟
-        </div>
-
-        <h1 class="title">
-            Ajedrez
-        </h1>
-
-        <div class="subtitle">
-            ¡Pon a prueba tu estrategia!
-        </div>
-
-        <button
-            class="start-button"
-            id="startButton"
-        >
-            ♟ Comenzar partida
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     JUEGO
-===================================================== -->
-
-<section id="game">
-
-    <div class="game-container">
-
-
-        <div class="game-header">
-
-            <h1 class="game-title">
-                ♟ Ajedrez
-            </h1>
-
-            <button
-                class="back-button"
-                id="backButton"
-            >
-                ← Inicio
-            </button>
-
-        </div>
-
-
-        <!-- MARCADOR -->
-
-        <div class="scoreboard">
-
-            <div class="score-card">
-
-                <div
-                    class="score-name"
-                    id="whiteName"
-                >
-                    ♔ Blancas
-                </div>
-
-                <div
-                    class="score"
-                    id="whiteScore"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="score-card">
-
-                <div
-                    class="score-name"
-                    id="blackName"
-                >
-                    ♚ Negras
-                </div>
-
-                <div
-                    class="score"
-                    id="blackScore"
-                >
-                    0
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="rounds">
-            Rondas jugadas:
-            <span id="roundCount">0</span>
-        </div>
-
-
-        <div class="controls">
-
-            <label>
-                Modo:
-            </label>
-
-            <select id="mode">
-
-                <option value="2">
-                    2 jugadores
-                </option>
-
-                <option value="1">
-                    1 jugador vs computadora
-                </option>
-
-            </select>
-
-
-            <button
-                class="new-game-button"
-                id="newGame"
-            >
-                Nueva partida
-            </button>
-
-        </div>
-
-
-        <div id="status">
-            Turno: Blancas
-        </div>
-
-
-        <div id="winnerMessage"></div>
-
-
-        <div
-            id="board"
-            class="board"
-        ></div>
-
-
-        <div class="info">
-            Haz clic en una pieza y después en la casilla donde quieres moverla.
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<script>
-
-/* =====================================================
-   PANTALLAS
-===================================================== */
-
-const home =
-    document.getElementById("home");
-
-const game =
-    document.getElementById("game");
-
-const startButton =
-    document.getElementById("startButton");
-
-const backButton =
-    document.getElementById("backButton");
-
-
-startButton.addEventListener(
-    "click",
-    function() {
-
-        home.style.display = "none";
-
-        game.style.display = "block";
-
-    }
-);
-
-
-backButton.addEventListener(
-    "click",
-    function() {
-
-        game.style.display = "none";
-
-        home.style.display = "flex";
-
-    }
-);
-
-
-/* =====================================================
-   AJEDREZ
-===================================================== */
-
-let chess =
-    new Chess();
-
-let selectedSquare =
-    null;
-
-let computerThinking =
-    false;
-
-
-/* =====================================================
-   MARCADOR
-===================================================== */
-
-let whiteWins = 0;
-
-let blackWins = 0;
-
-let rounds = 0;
-
-
-/* =====================================================
-   PIEZAS
-===================================================== */
-
-const symbols = {
-
-    wp: "♙",
-    wr: "♖",
-    wn: "♘",
-    wb: "♗",
-    wq: "♕",
-    wk: "♔",
-
-    bp: "♟",
-    br: "♜",
-    bn: "♞",
-    bb: "♝",
-    bq: "♛",
-    bk: "♚"
-
-};
-
-
-/* =====================================================
-   ELEMENTOS
-===================================================== */
-
-const boardElement =
-    document.getElementById("board");
-
-const statusElement =
-    document.getElementById("status");
-
-const modeElement =
-    document.getElementById("mode");
-
-const newGameButton =
-    document.getElementById("newGame");
-
-const winnerMessage =
-    document.getElementById("winnerMessage");
-
-const whiteScore =
-    document.getElementById("whiteScore");
-
-const blackScore =
-    document.getElementById("blackScore");
-
-const roundCount =
-    document.getElementById("roundCount");
-
-const whiteName =
-    document.getElementById("whiteName");
-
-const blackName =
-    document.getElementById("blackName");
-
-
-/* =====================================================
-   ACTUALIZAR MARCADOR
-===================================================== */
-
-function updateScoreboard() {
-
-    whiteScore.textContent =
-        whiteWins;
-
-    blackScore.textContent =
-        blackWins;
-
-    roundCount.textContent =
-        rounds;
-
-
-    if (
-        modeElement.value === "1"
-    ) {
-
-        whiteName.textContent =
-            "♔ Jugador";
-
-        blackName.textContent =
-            "♚ Computadora";
-
-    } else {
-
-        whiteName.textContent =
-            "♔ Blancas";
-
-        blackName.textContent =
-            "♚ Negras";
-
-    }
-
-}
-
-
-/* =====================================================
-   NUEVA PARTIDA
-===================================================== */
-
-function newGame() {
-
-    chess.reset();
-
-    selectedSquare = null;
-
-    computerThinking = false;
-
-    winnerMessage.style.display =
-        "none";
-
-    winnerMessage.textContent =
-        "";
-
-    drawBoard();
-
-    updateStatus();
-
-    updateScoreboard();
-
-}
-
-
-/* =====================================================
-   DIBUJAR TABLERO
-===================================================== */
-
-function drawBoard() {
-
-    boardElement.innerHTML = "";
-
-    const board =
-        chess.board();
-
-
-    for (
-        let row = 0;
-        row < 8;
-        row++
-    ) {
-
-        for (
-            let col = 0;
-            col < 8;
-            col++
-        ) {
-
-            const square =
-                document.createElement("div");
-
-
-            square.className =
-                "square " +
-                (
-                    (row + col) % 2 === 0
-                        ? "light"
-                        : "dark"
-                );
-
-
-            const file =
-                String.fromCharCode(
-                    97 + col
-                );
-
-            const rank =
-                8 - row;
-
-            const squareName =
-                file + rank;
-
-
-            square.dataset.square =
-                squareName;
-
-
-            if (
-                selectedSquare ===
-                squareName
-            ) {
-
-                square.classList.add(
-                    "selected"
-                );
-
-            }
-
-
-            /* MOVIMIENTOS */
-
-            if (selectedSquare) {
-
-                const moves =
-                    chess.moves({
-
-                        square:
-                            selectedSquare,
-
-                        verbose:
-                            true
-
-                    });
-
-
-                const move =
-                    moves.find(
-                        m =>
-                            m.to ===
-                            squareName
-                    );
-
-
-                if (move) {
-
-                    if (move.captured) {
-
-                        square.classList.add(
-                            "capture"
-                        );
-
-                    } else {
-
-                        square.classList.add(
-                            "possible"
-                        );
-
-                    }
-
-                }
-
-            }
-
-
-            /* PIEZA */
-
-            const piece =
-                board[row][col];
-
-
-            if (piece) {
-
-                const element =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                element.className =
-                    "piece " +
-                    (
-                        piece.color === "w"
-                            ? "white-piece"
-                            : "black-piece"
-                    );
-
-
-                element.textContent =
-                    symbols[
-                        piece.color +
-                        piece.type
-                    ];
-
-
-                square.appendChild(
-                    element
-                );
-
-            }
-
-
-            square.addEventListener(
-                "click",
-                function() {
-
-                    handleSquareClick(
-                        squareName
-                    );
-
-                }
-            );
-
-
-            boardElement.appendChild(
-                square
-            );
-
-        }
-
-    }
-
-
-    /* JAQUE */
-
-    if (chess.in_check()) {
-
-        const kingSquare =
-            findKingSquare(
-                chess.turn()
-            );
-
-
-        if (kingSquare) {
-
-            const kingElement =
-                document.querySelector(
-                    `[data-square="${kingSquare}"]`
-                );
-
-
-            if (kingElement) {
-
-                kingElement.classList.add(
-                    "check"
-                );
-
-            }
-
-        }
-
-    }
-
-}
-
-
-/* =====================================================
-   ENCONTRAR REY
-===================================================== */
-
-function findKingSquare(color) {
-
-    const board =
-        chess.board();
-
-
-    for (
-        let row = 0;
-        row < 8;
-        row++
-    ) {
-
-        for (
-            let col = 0;
-            col < 8;
-            col++
-        ) {
-
-            const piece =
-                board[row][col];
-
-
-            if (
-                piece &&
-                piece.color === color &&
-                piece.type === "k"
-            ) {
-
-                return (
-                    String.fromCharCode(
-                        97 + col
-                    ) +
-                    (8 - row)
-                );
-
-            }
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =====================================================
-   CLICK EN TABLERO
-===================================================== */
-
-function handleSquareClick(square) {
-
-    if (
-        chess.game_over()
-    ) {
-
-        return;
-
-    }
-
-
-    if (computerThinking) {
-
-        return;
-
-    }
-
-
-    if (
-        modeElement.value === "1" &&
-        chess.turn() === "b"
-    ) {
-
-        return;
-
-    }
-
-
-    const piece =
-        chess.get(square);
-
-
-    /* YA SELECCIONAMOS UNA PIEZA */
-
-    if (selectedSquare) {
-
-        const moves =
-            chess.moves({
-
-                square:
-                    selectedSquare,
-
-                verbose:
-                    true
-
-            });
-
-
-        const move =
-            moves.find(
-                m =>
-                    m.to === square
-            );
-
-
-        /* MOVIMIENTO VÁLIDO */
-
-        if (move) {
-
-            chess.move({
-
-                from:
-                    selectedSquare,
-
-                to:
-                    square,
-
-                promotion:
-                    "q"
-
-            });
-
-
-            selectedSquare = null;
-
-            drawBoard();
-
-            updateStatus();
-
-
-            if (
-                !chess.game_over() &&
-                modeElement.value === "1" &&
-                chess.turn() === "b"
-            ) {
-
-                computerThinking = true;
-
-                setTimeout(
-                    computerMove,
-                    500
-                );
-
-            }
-
-
-            return;
-
-        }
-
-
-        /* SELECCIONAR OTRA PIEZA */
-
-        if (
-            piece &&
-            piece.color ===
-            chess.turn()
-        ) {
-
-            selectedSquare =
-                square;
-
-            drawBoard();
-
-            return;
-
-        }
-
-
-        selectedSquare = null;
-
-        drawBoard();
-
-        return;
-
-    }
-
-
-    /* SELECCIONAR PIEZA */
-
-    if (
-        piece &&
-        piece.color ===
-        chess.turn()
-    ) {
-
-        selectedSquare =
-            square;
-
-        drawBoard();
-
-    }
-
-}
-
-
-/* =====================================================
-   COMPUTADORA
-===================================================== */
-
-function computerMove() {
-
-    if (
-        chess.game_over() ||
-        chess.turn() !== "b"
-    ) {
-
-        computerThinking = false;
-
-        return;
-
-    }
-
-
-    const moves =
-        chess.moves({
-            verbose: true
-        });
-
-
-    if (
-        moves.length === 0
-    ) {
-
-        computerThinking = false;
-
-        updateStatus();
-
-        return;
-
-    }
-
-
-    /* PRIORIZAR CAPTURAS */
-
-    const captures =
-        moves.filter(
-            move =>
-                move.captured
-        );
-
-
-    let choices =
-        captures.length > 0
-            ? captures
-            : moves;
-
-
-    /* PRIORIZAR JAQUES */
-
-    const checks =
-        choices.filter(
-            move => {
-
-                const test =
-                    new Chess(
-                        chess.fen()
-                    );
-
-
-                try {
-
-                    test.move({
-
-                        from:
-                            move.from,
-
-                        to:
-                            move.to,
-
-                        promotion:
-                            "q"
-
-                    });
-
-
-                    return test.in_check();
-
-                } catch {
-
-                    return false;
-
-                }
-
-            }
-        );
-
-
-    if (
-        checks.length > 0
-    ) {
-
-        choices =
-            checks;
-
-    }
-
-
-    const move =
-        choices[
-            Math.floor(
-                Math.random() *
-                choices.length
-            )
-        ];
-
-
-    chess.move({
-
-        from:
-            move.from,
-
-        to:
-            move.to,
-
-        promotion:
-            "q"
-
-    });
-
-
-    computerThinking = false;
-
-    drawBoard();
-
-    updateStatus();
-
-}
-
-
-/* =====================================================
-   FINAL DE PARTIDA
-===================================================== */
-
-function finishGame() {
-
-    if (
-        !chess.game_over()
-    ) {
-
-        return false;
-
-    }
-
-
-    /*
-     * Solo contamos la ronda una vez.
-     */
-
-    rounds++;
-
-
-    if (
-        chess.in_checkmate()
-    ) {
-
-        /*
-         * chess.turn() es el jugador
-         * que perdió.
-         */
-
-        if (
-            chess.turn() === "w"
-        ) {
-
-            blackWins++;
-
-            if (
-                modeElement.value === "1"
-            ) {
-
-                winnerMessage.textContent =
-                    "🏆 ¡La computadora ganó la ronda!";
-
-            } else {
-
-                winnerMessage.textContent =
-                    "🏆 ¡Las negras ganaron la ronda!";
-
-            }
-
-        } else {
-
-            whiteWins++;
-
-            winnerMessage.textContent =
-                "🏆 ¡Las blancas ganaron la ronda!";
-
-        }
-
-
-        winnerMessage.style.display =
-            "block";
-
-
-        updateScoreboard();
-
-        return true;
-
-    }
-
-
-    /*
-     * Tablas
-     */
-
-    if (
-        chess.in_stalemate() ||
-        chess.isThreefoldRepetition() ||
-        chess.insufficient_material() ||
-        chess.in_draw()
-    ) {
-
-        winnerMessage.textContent =
-            "🤝 ¡La ronda terminó en tablas!";
-
-        winnerMessage.style.display =
-            "block";
-
-
-        updateScoreboard();
-
-        return true;
-
-    }
-
-
-    return false;
-
-}
-
-
-/* =====================================================
-   ESTADO
-===================================================== */
-
-function updateStatus() {
-
-    if (
-        chess.in_checkmate()
-    ) {
-
-        const winner =
-            chess.turn() === "w"
-                ? "negras"
-                : "blancas";
-
-
-        statusElement.textContent =
-            "🏆 ¡Jaque mate!";
-
-
-        finishGame();
-
-        return;
-
-    }
-
-
-    if (
-        chess.in_stalemate()
-    ) {
-
-        statusElement.textContent =
-            "🤝 ¡Tablas por ahogado!";
-
-        finishGame();
-
-        return;
-
-    }
-
-
-    if (
-        chess.isThreefoldRepetition()
-    ) {
-
-        statusElement.textContent =
-            "🤝 ¡Tablas por repetición!";
-
-        finishGame();
-
-        return;
-
-    }
-
-
-    if (
-        chess.insufficient_material()
-    ) {
-
-        statusElement.textContent =
-            "🤝 ¡Tablas!";
-
-        finishGame();
-
-        return;
-
-    }
-
-
-    const turnText =
-        chess.turn() === "w"
-            ? "Blancas"
-            : "Negras";
-
-
-    if (
-        chess.in_check()
-    ) {
-
-        statusElement.textContent =
-            "⚠️ ¡Jaque! Turno: " +
-            turnText;
-
-    } else {
-
-        statusElement.textContent =
-            "Turno: " +
-            turnText;
-
-    }
-
-}
-
-
-/* =====================================================
-   CAMBIAR MODO
-===================================================== */
-
-modeElement.addEventListener(
-    "change",
-    function() {
-
-        /*
-         * Cambiamos de modo y empezamos
-         * un marcador nuevo.
-         */
-
-        whiteWins = 0;
-
-        blackWins = 0;
-
-        rounds = 0;
-
-        newGame();
-
-    }
-);
-
-
-/* =====================================================
-   NUEVA PARTIDA
-===================================================== */
-
-newGameButton.addEventListener(
-    "click",
-    function() {
-
-        newGame();
-
-    }
-);
-
-
-/* =====================================================
-   INICIO
-===================================================== */
-
-newGame();
-
-</script>
-
-</body>
-</html>

@@ -3,11 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ajedrez - 2 Jugadores</title>
 
+<!-- Motor de ajedrez -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 
 <style>
+
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
 * {
     box-sizing: border-box;
 }
@@ -18,12 +25,13 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* =========================================
+/* =====================================================
    PANTALLA DE INICIO
-========================================= */
+===================================================== */
 
 #home {
     width: 100%;
@@ -37,10 +45,26 @@ body {
     overflow: hidden;
 
     background:
-        radial-gradient(circle at 15% 20%, #ff6b6b, transparent 25%),
-        radial-gradient(circle at 85% 20%, #4dabf7, transparent 25%),
-        radial-gradient(circle at 50% 100%, #845ef7, transparent 35%),
-        linear-gradient(135deg, #667eea, #764ba2);
+        radial-gradient(
+            circle at 15% 20%,
+            #ff6b6b,
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            #4dabf7,
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            #845ef7,
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #667eea,
+            #764ba2
+        );
 }
 
 .home-card {
@@ -87,9 +111,11 @@ body {
 
 .subtitle {
     color: #5f6368;
+
     font-size: 18px;
 
-    margin: 10px 0 28px;
+    margin:
+        10px 0 28px;
 }
 
 .start-button {
@@ -97,9 +123,11 @@ body {
 
     border-radius: 30px;
 
-    padding: 15px 42px;
+    padding:
+        15px 42px;
 
     font-size: 18px;
+
     font-weight: bold;
 
     color: white;
@@ -120,13 +148,16 @@ body {
 }
 
 .start-button:hover {
-    transform: translateY(-3px) scale(1.04);
+    transform:
+        translateY(-3px)
+        scale(1.04);
 }
 
 .floating {
     position: absolute;
 
     color: white;
+
     opacity: 0.15;
 
     font-size: 100px;
@@ -162,7 +193,9 @@ body {
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform:
             translateY(0)
             rotate(-5deg);
@@ -175,9 +208,9 @@ body {
     }
 }
 
-/* =========================================
+/* =====================================================
    JUEGO
-========================================= */
+===================================================== */
 
 #game {
     display: none;
@@ -187,7 +220,8 @@ body {
 
     overflow: hidden;
 
-    padding: 8px 15px;
+    padding:
+        8px 15px;
 
     background:
         radial-gradient(
@@ -214,12 +248,13 @@ body {
     margin: auto;
 
     display: flex;
+
     flex-direction: column;
 }
 
-/* =========================================
+/* =====================================================
    CABECERA
-========================================= */
+===================================================== */
 
 .game-header {
     height: 45px;
@@ -251,7 +286,8 @@ body {
 
     color: white;
 
-    padding: 7px 13px;
+    padding:
+        7px 13px;
 
     border-radius: 7px;
 
@@ -263,9 +299,9 @@ body {
         rgba(255, 255, 255, 0.25);
 }
 
-/* =========================================
+/* =====================================================
    ZONA PRINCIPAL
-========================================= */
+===================================================== */
 
 .game-area {
     flex: 1;
@@ -275,15 +311,14 @@ body {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 24px;
 }
 
-/* =========================================
+/* =====================================================
    MARCADOR
-========================================= */
+===================================================== */
 
 .scoreboard {
     width: 140px;
@@ -304,12 +339,14 @@ body {
 
     border-radius: 14px;
 
-    padding: 14px 10px;
+    padding:
+        14px 10px;
 
     text-align: center;
 
     box-shadow:
-        0 7px 18px rgba(0, 0, 0, 0.35);
+        0 7px 18px
+        rgba(0, 0, 0, 0.35);
 }
 
 .score-name {
@@ -334,9 +371,9 @@ body {
     color: #e5e7eb;
 }
 
-/* =========================================
-   TABLERO
-========================================= */
+/* =====================================================
+   TABLERO Y MESA
+===================================================== */
 
 .board-section {
     position: relative;
@@ -350,19 +387,49 @@ body {
     justify-content: center;
 }
 
+.table {
+    padding: 20px;
+
+    border-radius: 17px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #5d351a 0px,
+            #70421f 35px,
+            #4d2b15 70px,
+            #6a3b1b 105px
+        );
+
+    border:
+        7px solid #3e210f;
+
+    box-shadow:
+        0 20px 35px rgba(0, 0, 0, 0.6),
+        inset 0 3px 6px
+        rgba(255, 255, 255, 0.12),
+        inset 0 -5px 12px
+        rgba(0, 0, 0, 0.4);
+}
+
 .board {
     width: min(440px, 56vh);
     height: min(440px, 56vh);
 
     display: grid;
 
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns:
+        repeat(8, 1fr);
 
-    border: 4px solid #211208;
+    grid-template-rows:
+        repeat(8, 1fr);
+
+    border:
+        4px solid #211208;
 
     box-shadow:
-        0 8px 18px rgba(0, 0, 0, 0.55);
+        0 8px 18px
+        rgba(0, 0, 0, 0.55);
 }
 
 .square {
@@ -386,12 +453,13 @@ body {
     background: #b58863;
 }
 
-/* =========================================
+/* =====================================================
    PIEZAS
-========================================= */
+===================================================== */
 
 .piece {
-    font-size: min(40px, 4.9vh);
+    font-size:
+        min(40px, 4.9vh);
 
     line-height: 1;
 
@@ -400,7 +468,8 @@ body {
     z-index: 2;
 
     text-shadow:
-        1px 2px 2px rgba(0, 0, 0, 0.5);
+        1px 2px 2px
+        rgba(0, 0, 0, 0.5);
 }
 
 .white-piece {
@@ -411,9 +480,9 @@ body {
     color: #111;
 }
 
-/* =========================================
+/* =====================================================
    MOVIMIENTOS
-========================================= */
+===================================================== */
 
 .selected {
     box-shadow:
@@ -444,35 +513,9 @@ body {
         inset 0 0 0 5px #ea4335;
 }
 
-/* =========================================
-   MESA
-========================================= */
-
-.table {
-    padding: 20px;
-
-    border-radius: 17px;
-
-    background:
-        repeating-linear-gradient(
-            90deg,
-            #5d351a 0px,
-            #70421f 35px,
-            #4d2b15 70px,
-            #6a3b1b 105px
-        );
-
-    border: 7px solid #3e210f;
-
-    box-shadow:
-        0 20px 35px rgba(0, 0, 0, 0.6),
-        inset 0 3px 6px rgba(255, 255, 255, 0.12),
-        inset 0 -5px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* =========================================
+/* =====================================================
    SILLAS
-========================================= */
+===================================================== */
 
 .chair {
     width: 145px;
@@ -485,7 +528,8 @@ body {
     justify-content: center;
     align-items: flex-end;
 
-    margin: -3px 0;
+    margin:
+        -3px 0;
 }
 
 .chair-back {
@@ -508,11 +552,14 @@ body {
             #4d2b15
         );
 
-    border: 4px solid #3e210f;
+    border:
+        4px solid #3e210f;
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.15),
-        0 3px 6px rgba(0, 0, 0, 0.4);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.15),
+        0 3px 6px
+        rgba(0, 0, 0, 0.4);
 }
 
 .chair-seat {
@@ -529,14 +576,16 @@ body {
             #4d2b15
         );
 
-    border: 4px solid #3e210f;
+    border:
+        4px solid #3e210f;
 
     position: relative;
 
     z-index: 2;
 
     box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.4);
+        0 3px 6px
+        rgba(0, 0, 0, 0.4);
 }
 
 .chair-legs {
@@ -564,19 +613,22 @@ body {
     transform: rotate(180deg);
 }
 
-/* =========================================
-   CONTROLES + RANKING
-========================================= */
+/* =====================================================
+   CONTROLES
+===================================================== */
 
 .controls {
     position: absolute;
 
-    left: calc(100% + 20px);
+    left:
+        calc(100% + 20px);
+
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
-    width: 185px;
+    width: 190px;
 
     display: flex;
 
@@ -598,7 +650,8 @@ body {
     backdrop-filter: blur(5px);
 
     box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.25);
+        0 8px 20px
+        rgba(0, 0, 0, 0.25);
 
     z-index: 10;
 }
@@ -616,7 +669,8 @@ body {
 
     border: none;
 
-    padding: 9px 10px;
+    padding:
+        9px 10px;
 
     border-radius: 6px;
 
@@ -633,9 +687,9 @@ body {
     background: #1765c1;
 }
 
-/* =========================================
-   RANKING
-========================================= */
+/* =====================================================
+   RANKING TOP 15
+===================================================== */
 
 .ranking {
     margin-top: 6px;
@@ -662,6 +716,37 @@ body {
         0 1px 3px black;
 }
 
+.ranking-list {
+    max-height: 285px;
+
+    overflow-y: auto;
+
+    padding-right: 4px;
+}
+
+/* Barra del ranking */
+
+.ranking-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ranking-list::-webkit-scrollbar-track {
+    background:
+        rgba(255,255,255,0.05);
+}
+
+.ranking-list::-webkit-scrollbar-thumb {
+    background:
+        rgba(255,255,255,0.35);
+
+    border-radius: 10px;
+}
+
+.ranking-list::-webkit-scrollbar-thumb:hover {
+    background:
+        rgba(255,255,255,0.55);
+}
+
 .ranking-player {
     display: flex;
 
@@ -669,7 +754,8 @@ body {
 
     align-items: center;
 
-    padding: 5px 6px;
+    padding:
+        5px 6px;
 
     margin-bottom: 3px;
 
@@ -680,7 +766,7 @@ body {
     color: white;
 
     background:
-        rgba(255, 255, 255, 0.07);
+        rgba(255,255,255,0.07);
 }
 
 .ranking-player strong {
@@ -691,27 +777,28 @@ body {
 
 .ranking-player.top1 {
     background:
-        rgba(255, 215, 0, 0.18);
+        rgba(255,215,0,0.20);
 }
 
 .ranking-player.top2 {
     background:
-        rgba(192, 192, 192, 0.15);
+        rgba(192,192,192,0.16);
 }
 
 .ranking-player.top3 {
     background:
-        rgba(205, 127, 50, 0.15);
+        rgba(205,127,50,0.18);
 }
 
-/* =========================================
+/* =====================================================
    TURNO
-========================================= */
+===================================================== */
 
 #status {
     min-height: 22px;
 
-    margin: 1px 0 4px;
+    margin:
+        1px 0 4px;
 
     font-size: 16px;
 
@@ -721,22 +808,22 @@ body {
         0 2px 4px black;
 }
 
-/* =========================================
+/* =====================================================
    INFORMACIÓN
-========================================= */
+===================================================== */
 
 .info {
     margin-top: 4px;
 
     color:
-        rgba(255, 255, 255, 0.7);
+        rgba(255,255,255,0.7);
 
     font-size: 12px;
 }
 
-/* =========================================
-   RESULTADO
-========================================= */
+/* =====================================================
+   VENTANA DE RESULTADO
+===================================================== */
 
 #gameResult {
     display: none;
@@ -753,20 +840,22 @@ body {
 
     min-width: 380px;
 
-    padding: 30px 40px;
+    padding:
+        30px 40px;
 
     text-align: center;
 
     border-radius: 20px;
 
     background:
-        rgba(20, 25, 35, 0.97);
+        rgba(20,25,35,0.97);
 
     border:
         3px solid #f5c542;
 
     box-shadow:
-        0 15px 50px rgba(0, 0, 0, 0.65);
+        0 15px 50px
+        rgba(0,0,0,0.65);
 
     animation:
         resultAppear 0.3s ease;
@@ -793,7 +882,8 @@ body {
 
     border: none;
 
-    padding: 10px 22px;
+    padding:
+        10px 22px;
 
     border-radius: 8px;
 
@@ -829,20 +919,29 @@ body {
     }
 }
 
-/* =========================================
+/* =====================================================
    RESPONSIVE
-========================================= */
+===================================================== */
 
 @media (max-width: 950px) {
 
     .controls {
-        left: calc(100% + 10px);
-        width: 165px;
+        left:
+            calc(100% + 10px);
+
+        width: 175px;
     }
 
     .board {
-        width: min(410px, 54vh);
-        height: min(410px, 54vh);
+        width:
+            min(410px, 54vh);
+
+        height:
+            min(410px, 54vh);
+    }
+
+    .ranking-list {
+        max-height: 260px;
     }
 }
 
@@ -869,8 +968,11 @@ body {
     }
 
     .board {
-        width: min(82vw, 450px);
-        height: min(82vw, 450px);
+        width:
+            min(82vw, 450px);
+
+        height:
+            min(82vw, 450px);
     }
 
     .piece {
@@ -908,7 +1010,8 @@ body {
     #gameResult {
         min-width: 85%;
 
-        padding: 25px 20px;
+        padding:
+            25px 20px;
     }
 
     .result-title {
@@ -919,41 +1022,49 @@ body {
         font-size: 19px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- =========================================
-     RESULTADO
-========================================= -->
+
+<!-- =====================================================
+     VENTANA DE RESULTADO
+===================================================== -->
 
 <div id="gameResult">
 
     <div
         class="result-title"
         id="resultTitle">
+
         ♟ ¡JAQUE MATE!
+
     </div>
 
     <div
         class="result-point"
         id="resultPoint">
+
         🏆 ¡PUNTO PARA LAS BLANCAS!
+
     </div>
 
     <button
         class="result-button"
         id="continueButton">
+
         Continuar
+
     </button>
 
 </div>
 
 
-<!-- =========================================
+<!-- =====================================================
      INICIO
-========================================= -->
+===================================================== -->
 
 <section id="home">
 
@@ -964,7 +1075,9 @@ body {
 
     <div class="home-card">
 
-        <div class="logo">♟</div>
+        <div class="logo">
+            ♟
+        </div>
 
         <h1 class="title">
             Ajedrez
@@ -977,7 +1090,9 @@ body {
         <button
             class="start-button"
             id="startButton">
+
             ♟ Comenzar partida
+
         </button>
 
     </div>
@@ -985,13 +1100,16 @@ body {
 </section>
 
 
-<!-- =========================================
+<!-- =====================================================
      JUEGO
-========================================= -->
+===================================================== -->
 
 <section id="game">
 
     <div class="game-container">
+
+
+        <!-- CABECERA -->
 
         <header class="game-header">
 
@@ -1002,13 +1120,18 @@ body {
             <button
                 class="back-button"
                 id="backButton">
+
                 ← Inicio
+
             </button>
 
         </header>
 
 
+        <!-- ZONA PRINCIPAL -->
+
         <div class="game-area">
+
 
             <!-- MARCADOR -->
 
@@ -1023,7 +1146,9 @@ body {
                     <div
                         class="score"
                         id="whiteScore">
+
                         0
+
                     </div>
 
                 </div>
@@ -1038,7 +1163,9 @@ body {
                     <div
                         class="score"
                         id="blackScore">
+
                         0
+
                     </div>
 
                 </div>
@@ -1047,7 +1174,9 @@ body {
                 <div class="rounds">
 
                     Rondas jugadas:
-                    <strong id="roundCount">0</strong>
+                    <strong id="roundCount">
+                        0
+                    </strong>
 
                 </div>
 
@@ -1058,7 +1187,8 @@ body {
 
             <main class="board-section">
 
-                <!-- SILLA SUPERIOR -->
+
+                <!-- SILLA DE ARRIBA -->
 
                 <div class="chair top">
 
@@ -1088,106 +1218,221 @@ body {
                     <button
                         class="new-game-button"
                         id="newGame">
+
                         ♟ Nueva partida
+
                     </button>
 
 
-                    <!-- TOP 7 -->
+                    <!-- RANKING -->
 
                     <div class="ranking">
 
                         <div class="ranking-title">
-                            🏆 TOP 7
+                            🏆 TOP 15
                         </div>
 
 
-                        <div class="ranking-player top1">
-
-                            <span>
-                                🥇 1. Pepito
-                            </span>
-
-                            <strong>
-                                127
-                            </strong>
-
-                        </div>
+                        <div class="ranking-list">
 
 
-                        <div class="ranking-player top2">
+                            <div
+                                class="ranking-player top1">
 
-                            <span>
-                                🥈 2. Juan
-                            </span>
+                                <span>
+                                    🥇 1. Pepito
+                                </span>
 
-                            <strong>
-                                114
-                            </strong>
+                                <strong>
+                                    32
+                                </strong>
 
-                        </div>
-
-
-                        <div class="ranking-player top3">
-
-                            <span>
-                                🥉 3. Mateo
-                            </span>
-
-                            <strong>
-                                98
-                            </strong>
-
-                        </div>
+                            </div>
 
 
-                        <div class="ranking-player">
+                            <div
+                                class="ranking-player top2">
 
-                            <span>
-                                4. Lucas
-                            </span>
+                                <span>
+                                    🥈 2. Juan
+                                </span>
 
-                            <strong>
-                                87
-                            </strong>
+                                <strong>
+                                    28
+                                </strong>
 
-                        </div>
-
-
-                        <div class="ranking-player">
-
-                            <span>
-                                5. Diego
-                            </span>
-
-                            <strong>
-                                76
-                            </strong>
-
-                        </div>
+                            </div>
 
 
-                        <div class="ranking-player">
+                            <div
+                                class="ranking-player top3">
 
-                            <span>
-                                6. Tomás
-                            </span>
+                                <span>
+                                    🥉 3. Mateo
+                                </span>
 
-                            <strong>
-                                64
-                            </strong>
+                                <strong>
+                                    25
+                                </strong>
 
-                        </div>
+                            </div>
 
 
-                        <div class="ranking-player">
+                            <div class="ranking-player">
 
-                            <span>
-                                7. Nico
-                            </span>
+                                <span>
+                                    4. Lucas
+                                </span>
 
-                            <strong>
-                                51
-                            </strong>
+                                <strong>
+                                    22
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    5. Diego
+                                </span>
+
+                                <strong>
+                                    19
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    6. Nico
+                                </span>
+
+                                <strong>
+                                    17
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    7. Tomás
+                                </span>
+
+                                <strong>
+                                    15
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    8. Martín
+                                </span>
+
+                                <strong>
+                                    13
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    9. Benjamín
+                                </span>
+
+                                <strong>
+                                    12
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    10. Felipe
+                                </span>
+
+                                <strong>
+                                    10
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    11. Andrés
+                                </span>
+
+                                <strong>
+                                    9
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    12. Sebastián
+                                </span>
+
+                                <strong>
+                                    8
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    13. Joaquín
+                                </span>
+
+                                <strong>
+                                    6
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    14. Gabriel
+                                </span>
+
+                                <strong>
+                                    4
+                                </strong>
+
+                            </div>
+
+
+                            <div class="ranking-player">
+
+                                <span>
+                                    15. Daniel
+                                </span>
+
+                                <strong>
+                                    2
+                                </strong>
+
+                            </div>
+
 
                         </div>
 
@@ -1215,7 +1460,7 @@ body {
                 </div>
 
 
-                <!-- SILLA INFERIOR -->
+                <!-- SILLA DE ABAJO -->
 
                 <div class="chair bottom">
 
@@ -1234,8 +1479,12 @@ body {
 
 
                 <div class="info">
-                    Haz clic en una pieza y después en la casilla donde quieres moverla.
+
+                    Haz clic en una pieza y después
+                    en la casilla donde quieres moverla.
+
                 </div>
+
 
             </main>
 
@@ -1248,9 +1497,9 @@ body {
 
 <script>
 
-/* =========================================
+/* =====================================================
    PANTALLAS
-========================================= */
+===================================================== */
 
 const home =
     document.getElementById("home");
@@ -1261,7 +1510,7 @@ const game =
 
 document
     .getElementById("startButton")
-    .addEventListener("click", function () {
+    .addEventListener("click", function() {
 
         home.style.display = "none";
 
@@ -1272,7 +1521,7 @@ document
 
 document
     .getElementById("backButton")
-    .addEventListener("click", function () {
+    .addEventListener("click", function() {
 
         game.style.display = "none";
 
@@ -1283,9 +1532,9 @@ document
     });
 
 
-/* =========================================
-   AJEDREZ
-========================================= */
+/* =====================================================
+   MOTOR DE AJEDREZ
+===================================================== */
 
 let chess = new Chess();
 
@@ -1300,9 +1549,9 @@ let rounds = 0;
 let gameCounted = false;
 
 
-/* =========================================
+/* =====================================================
    PIEZAS
-========================================= */
+===================================================== */
 
 const symbols = {
 
@@ -1323,9 +1572,9 @@ const symbols = {
 };
 
 
-/* =========================================
+/* =====================================================
    ELEMENTOS
-========================================= */
+===================================================== */
 
 const boardElement =
     document.getElementById("board");
@@ -1352,9 +1601,9 @@ const resultPoint =
     document.getElementById("resultPoint");
 
 
-/* =========================================
-   MARCADOR
-========================================= */
+/* =====================================================
+   ACTUALIZAR MARCADOR
+===================================================== */
 
 function updateScoreboard() {
 
@@ -1366,13 +1615,12 @@ function updateScoreboard() {
 
     roundCount.textContent =
         rounds;
-
 }
 
 
-/* =========================================
+/* =====================================================
    NUEVA PARTIDA
-========================================= */
+===================================================== */
 
 function newGame() {
 
@@ -1387,23 +1635,32 @@ function newGame() {
     drawBoard();
 
     updateStatus();
-
 }
 
 
-/* =========================================
+/* =====================================================
    DIBUJAR TABLERO
-========================================= */
+===================================================== */
 
 function drawBoard() {
 
     boardElement.innerHTML = "";
 
-    const board = chess.board();
+    const board =
+        chess.board();
 
-    for (let row = 0; row < 8; row++) {
 
-        for (let col = 0; col < 8; col++) {
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
 
             const square =
                 document.createElement("div");
@@ -1411,7 +1668,11 @@ function drawBoard() {
             square.classList.add("square");
 
 
-            if ((row + col) % 2 === 0) {
+            /* COLOR */
+
+            if (
+                (row + col) % 2 === 0
+            ) {
 
                 square.classList.add("light");
 
@@ -1422,8 +1683,12 @@ function drawBoard() {
             }
 
 
+            /* NOMBRE DE CASILLA */
+
             const file =
-                String.fromCharCode(97 + col);
+                String.fromCharCode(
+                    97 + col
+                );
 
             const rank =
                 8 - row;
@@ -1438,30 +1703,41 @@ function drawBoard() {
 
             /* SELECCIÓN */
 
-            if (selectedSquare === squareName) {
+            if (
+                selectedSquare ===
+                squareName
+            ) {
 
-                square.classList.add("selected");
+                square.classList.add(
+                    "selected"
+                );
 
             }
 
 
-            /* MOVIMIENTOS POSIBLES */
+            /* MOVIMIENTOS */
 
             if (selectedSquare) {
 
                 const moves =
                     chess.moves({
-                        square: selectedSquare,
+                        square:
+                            selectedSquare,
                         verbose: true
                     });
 
 
                 const move =
-                    moves.find(function (m) {
+                    moves.find(
+                        function(m) {
 
-                        return m.to === squareName;
+                            return (
+                                m.to ===
+                                squareName
+                            );
 
-                    });
+                        }
+                    );
 
 
                 if (move) {
@@ -1494,12 +1770,18 @@ function drawBoard() {
             if (piece) {
 
                 const pieceElement =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
 
-                pieceElement.classList.add("piece");
+                pieceElement.classList.add(
+                    "piece"
+                );
 
 
-                if (piece.color === "w") {
+                if (
+                    piece.color === "w"
+                ) {
 
                     pieceElement.classList.add(
                         "white-piece"
@@ -1530,15 +1812,19 @@ function drawBoard() {
 
             square.addEventListener(
                 "click",
-                function () {
+                function() {
 
-                    handleSquareClick(squareName);
+                    handleSquareClick(
+                        squareName
+                    );
 
                 }
             );
 
 
-            boardElement.appendChild(square);
+            boardElement.appendChild(
+                square
+            );
 
         }
 
@@ -1550,7 +1836,9 @@ function drawBoard() {
     if (chess.in_check()) {
 
         const kingSquare =
-            findKingSquare(chess.turn());
+            findKingSquare(
+                chess.turn()
+            );
 
 
         if (kingSquare) {
@@ -1565,7 +1853,9 @@ function drawBoard() {
 
             if (king) {
 
-                king.classList.add("check");
+                king.classList.add(
+                    "check"
+                );
 
             }
 
@@ -1576,9 +1866,9 @@ function drawBoard() {
 }
 
 
-/* =========================================
-   BUSCAR REY
-========================================= */
+/* =====================================================
+   ENCONTRAR REY
+===================================================== */
 
 function findKingSquare(color) {
 
@@ -1586,9 +1876,17 @@ function findKingSquare(color) {
         chess.board();
 
 
-    for (let row = 0; row < 8; row++) {
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
 
-        for (let col = 0; col < 8; col++) {
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
 
             const piece =
                 board[row][col];
@@ -1601,7 +1899,9 @@ function findKingSquare(color) {
             ) {
 
                 return (
-                    String.fromCharCode(97 + col) +
+                    String.fromCharCode(
+                        97 + col
+                    ) +
                     (8 - row)
                 );
 
@@ -1613,20 +1913,19 @@ function findKingSquare(color) {
 
 
     return null;
-
 }
 
 
-/* =========================================
-   CLICK EN CASILLA
-========================================= */
+/* =====================================================
+   CLICK EN TABLERO
+===================================================== */
 
 function handleSquareClick(square) {
 
+    /* PARTIDA TERMINADA */
+
     if (chess.game_over()) {
-
         return;
-
     }
 
 
@@ -1634,23 +1933,28 @@ function handleSquareClick(square) {
         chess.get(square);
 
 
-    /* YA HAY PIEZA SELECCIONADA */
+    /* YA HAY UNA PIEZA SELECCIONADA */
 
     if (selectedSquare) {
 
         const moves =
             chess.moves({
-                square: selectedSquare,
+                square:
+                    selectedSquare,
                 verbose: true
             });
 
 
         const move =
-            moves.find(function (m) {
+            moves.find(
+                function(m) {
 
-                return m.to === square;
+                    return (
+                        m.to === square
+                    );
 
-            });
+                }
+            );
 
 
         /* MOVIMIENTO VÁLIDO */
@@ -1658,9 +1962,14 @@ function handleSquareClick(square) {
         if (move) {
 
             chess.move({
-                from: selectedSquare,
-                to: square,
-                promotion: "q"
+                from:
+                    selectedSquare,
+
+                to:
+                    square,
+
+                promotion:
+                    "q"
             });
 
 
@@ -1671,34 +1980,33 @@ function handleSquareClick(square) {
             updateStatus();
 
             return;
-
         }
 
 
-        /* SELECCIONAR OTRA PIEZA */
+        /* CAMBIAR DE PIEZA */
 
         if (
             piece &&
-            piece.color === chess.turn()
+            piece.color ===
+            chess.turn()
         ) {
 
-            selectedSquare = square;
+            selectedSquare =
+                square;
 
             drawBoard();
 
             return;
-
         }
 
 
-        /* QUITAR SELECCIÓN */
+        /* DESELECCIONAR */
 
         selectedSquare = null;
 
         drawBoard();
 
         return;
-
     }
 
 
@@ -1706,27 +2014,30 @@ function handleSquareClick(square) {
 
     if (
         piece &&
-        piece.color === chess.turn()
+        piece.color ===
+        chess.turn()
     ) {
 
-        selectedSquare = square;
+        selectedSquare =
+            square;
 
         drawBoard();
-
     }
 
 }
 
 
-/* =========================================
-   ESTADO
-========================================= */
+/* =====================================================
+   ESTADO DE LA PARTIDA
+===================================================== */
 
 function updateStatus() {
 
     /* JAQUE MATE */
 
-    if (chess.in_checkmate()) {
+    if (
+        chess.in_checkmate()
+    ) {
 
         statusElement.textContent =
             "♟ ¡JAQUE MATE!";
@@ -1734,7 +2045,6 @@ function updateStatus() {
         finishGame();
 
         return;
-
     }
 
 
@@ -1753,7 +2063,6 @@ function updateStatus() {
         finishGame();
 
         return;
-
     }
 
 
@@ -1765,7 +2074,9 @@ function updateStatus() {
 
     /* JAQUE */
 
-    if (chess.in_check()) {
+    if (
+        chess.in_check()
+    ) {
 
         statusElement.textContent =
             "⚠️ ¡JAQUE! Turno: " +
@@ -1782,9 +2093,9 @@ function updateStatus() {
 }
 
 
-/* =========================================
-   FINAL
-========================================= */
+/* =====================================================
+   FINAL DE PARTIDA
+===================================================== */
 
 function finishGame() {
 
@@ -1794,7 +2105,6 @@ function finishGame() {
     ) {
 
         return;
-
     }
 
 
@@ -1805,18 +2115,22 @@ function finishGame() {
 
     /* JAQUE MATE */
 
-    if (chess.in_checkmate()) {
+    if (
+        chess.in_checkmate()
+    ) {
 
         resultTitle.textContent =
             "♟ ¡JAQUE MATE!";
 
 
         /*
-         * El turno actual es el jugador
-         * que recibió el jaque mate.
+         * Si el turno es de blancas,
+         * las negras dieron jaque mate.
          */
 
-        if (chess.turn() === "w") {
+        if (
+            chess.turn() === "w"
+        ) {
 
             blackWins++;
 
@@ -1852,25 +2166,23 @@ function finishGame() {
 
     gameResult.style.display =
         "block";
-
 }
 
 
-/* =========================================
+/* =====================================================
    CERRAR RESULTADO
-========================================= */
+===================================================== */
 
 function closeResult() {
 
     gameResult.style.display =
         "none";
-
 }
 
 
-/* =========================================
+/* =====================================================
    BOTONES
-========================================= */
+===================================================== */
 
 document
     .getElementById("newGame")
@@ -1888,9 +2200,9 @@ document
     );
 
 
-/* =========================================
-   INICIO DEL JUEGO
-========================================= */
+/* =====================================================
+   INICIAR
+===================================================== */
 
 updateScoreboard();
 
